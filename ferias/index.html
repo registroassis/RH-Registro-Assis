@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Indicação de Férias 2027 · Registro Assis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#152A50;--brass:#D3A521;--blue:#1B4F91;--bg:#F5F5F4;--surface:#fff;--text:#1D2433;--muted:#5E6779;--line:#D5D8E0;--band:#EEF1F7;
+--ok:#1E7F57;--okbg:#E3F4EC;--bad:#B3261E;--badbg:#FDE8E6;--warn:#7A5A00;--warnbg:#FFF4D6;--o1:#1B4F91;--o2:#2E86C1;--o3:#7FB3DE;--prog:#B7BCC8}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--ink:#E6E9F0;--bg:#0F1626;--surface:#161F33;--text:#E6E9F0;--muted:#9AA3B8;--line:#2B3650;--band:#1B2640;--ok:#5CC49A;--okbg:#14352A;--bad:#FF8A80;--badbg:#401B18;--warn:#F1CF73;--warnbg:#3A2F10;--o1:#5FA6E8;--o2:#4C8FD0;--o3:#3A6FA3;--prog:#5B6479;color-scheme:dark}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:14px/1.45 Inter,system-ui,sans-serif;padding-inline:max(16px,env(safe-area-inset-left,0px)) max(16px,env(safe-area-inset-right,0px));padding-block:0 40px}
+.w{max-width:1280px;margin:0 auto}
+header{display:flex;flex-wrap:wrap;gap:10px 20px;align-items:center;justify-content:space-between;padding:16px 0 12px;border-bottom:3px solid var(--brass);margin-bottom:16px}
+h1{font:700 20px/1.2 Poppins,sans-serif;color:var(--ink);margin:0}
+.sub{margin:2px 0 0;color:var(--muted);font-size:12px}
+.live{display:inline-flex;gap:6px;align-items:center;font-size:12px;color:var(--muted)}
+.dot{width:9px;height:9px;border-radius:50%;background:#aaa}.dot.on{background:var(--ok);box-shadow:0 0 0 3px var(--okbg)}.dot.off{background:var(--bad)}
+.who{display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:13px}
+.who b{font-weight:600}
+button,.btn{font:600 13px Poppins,sans-serif;padding:8px 14px;border-radius:7px;border:1px solid var(--line);background:var(--surface);color:var(--text);cursor:pointer}
+button.pri{background:var(--ink);color:#fff;border-color:var(--ink)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) button.pri{background:var(--brass);color:#1b1500;border-color:var(--brass)}}
+button:disabled{opacity:.5;cursor:not-allowed}
+button:focus-visible,select:focus-visible,textarea:focus-visible,input:focus-visible{outline:2px solid var(--brass);outline-offset:2px}
+select,textarea,input{font:inherit;padding:8px 10px;border:1px solid var(--line);border-radius:7px;background:var(--surface);color:var(--text);max-width:100%}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.tab[aria-selected="true"]{background:var(--ink);color:#fff;border-color:var(--ink)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .tab[aria-selected="true"]{background:var(--brass);color:#1b1500;border-color:var(--brass)}}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px}
+.dates{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin-bottom:14px}
+.dcard{border:2px solid var(--brass);border-radius:12px;background:var(--surface);padding:14px 16px}
+.dcard .l{font:600 12px Poppins,sans-serif;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.dcard .v{font:700 28px/1.2 Poppins,sans-serif;color:var(--ink);margin-top:4px}
+.dcard .s{font-size:12.5px;color:var(--muted);margin-top:2px}
+.dcard.lim{background:var(--warnbg);border-color:var(--brass)}.dcard.lim .v{color:var(--warn)}
+td.dd{background:color-mix(in srgb,var(--brass) 12%,transparent);font-weight:700;white-space:nowrap}
+.grid2{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:14px}
+@media (max-width:820px){.grid2{grid-template-columns:minmax(0,1fr)}}
+h2{font:600 15px Poppins,sans-serif;color:var(--ink);margin:0 0 10px}
+h3{font:600 13px Poppins,sans-serif;color:var(--ink);margin:14px 0 6px}
+.field{display:flex;flex-direction:column;gap:4px;margin-bottom:12px}
+.field label{font-weight:600;font-size:12.5px}
+.hint{font-size:12px;color:var(--muted)}
+.msg{padding:6px 10px;border-radius:6px;font-size:12.5px;margin-top:4px}
+.msg.bad{background:var(--badbg);color:var(--bad)}.msg.warn{background:var(--warnbg);color:var(--warn)}.msg.ok{background:var(--okbg);color:var(--ok)}
+.kv{display:grid;grid-template-columns:max-content 1fr;gap:4px 12px;font-size:13px}
+.kv dt{color:var(--muted)}.kv dd{margin:0;font-weight:500}
+.tw{overflow:auto;border:1px solid var(--line);border-radius:10px;background:var(--surface);max-height:75vh}
+table{border-collapse:separate;border-spacing:0;width:100%;font-size:12.5px}
+th{position:sticky;top:0;z-index:2;background:#152A50;color:#fff;font:600 11px/1.25 Poppins,sans-serif;text-align:left;padding:8px 8px;white-space:nowrap}
+td{padding:7px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+tr.sec td{background:var(--band);font:600 12px Poppins,sans-serif;color:var(--ink);position:sticky;left:0}
+td.nm{font-weight:600;min-width:170px}
+.opt{display:block;line-height:1.3}.opt small{display:block;color:var(--muted);font-size:11px}
+.chip{display:inline-block;padding:1px 8px;border-radius:10px;font-size:11px;font-weight:600;white-space:nowrap}
+.chip.ok{background:var(--okbg);color:var(--ok)}.chip.pend{background:var(--warnbg);color:var(--warn)}.chip.bad{background:var(--badbg);color:var(--bad)}
+.me td{background:color-mix(in srgb,var(--brass) 14%,transparent)}
+.cal th.m{text-align:center;min-width:54px}
+.cal td.c{text-align:center;padding:4px 2px;font-size:11px;font-weight:600;min-width:54px;border-left:1px solid var(--line)}
+.c .p{display:block;border-radius:4px;color:#fff;padding:2px 0;margin:1px 2px}
+.p1{background:var(--o1)}.p2{background:var(--o2)}.p3{background:var(--o3);color:#0c1b30!important}.pp{background:var(--prog);color:#10151f!important}.px{background:var(--bad)!important;color:#fff!important}
+.legend{display:flex;gap:6px 14px;flex-wrap:wrap;font-size:12px;color:var(--muted);margin:0 0 10px}
+.legend span i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:5px;vertical-align:-2px}
+.tools{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:10px}
+.prog{height:8px;background:var(--band);border-radius:6px;overflow:hidden;min-width:140px}.prog>i{display:block;height:100%;background:var(--ok)}
+.log li{padding:7px 0;border-bottom:1px solid var(--line);font-size:13px;list-style:none}.log{padding:0;margin:0}.log small{color:var(--muted)}
+.center{max-width:480px;margin:40px auto}
+footer{margin-top:24px;color:var(--muted);font-size:12px;display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+footer a,footer button.lnk{background:none;border:0;padding:0;font:inherit;color:var(--muted);text-decoration:underline;cursor:pointer}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:#152A50;color:#fff;padding:10px 16px;border-radius:8px;font-size:13px;z-index:9;max-width:90vw}
+.ban{background:var(--badbg);color:var(--bad);padding:10px 14px;border-radius:8px;margin-bottom:12px;font-size:13px}
+.rhbar{background:var(--warnbg);color:var(--warn);padding:8px 12px;border-radius:8px;margin-bottom:12px;font-size:13px}
+@page{size:A4 landscape;margin:8mm}
+@media print{.noprint,.tabs,header .who,footer{display:none!important}body{background:#fff;color:#000;font-size:10px}.tw{max-height:none;overflow:visible}th{position:static}.panel{display:block!important}}
+</style>
+</head>
+<body>
+<div class="w">
+<header>
+  <div><h1>Indicação de Férias 2027</h1><p class="sub">Registro de Imóveis · Assis/SP · escolha até 3 meses de preferência</p></div>
+  <div class="who noprint"><span class="live"><span class="dot" id="dot"></span><span id="liveTxt">Conectando…</span></span><span id="whoTxt"></span><button id="trocar" hidden>Trocar</button></div>
+</header>
+<div id="banner"></div>
+<main id="app"></main>
+<footer class="noprint"><span>Dados de período e data-limite: relatório da folha de 18/09/2026.</span><button class="lnk" id="rhLnk">Modo RH</button></footer>
+</div>
+<div id="toast" class="toast" hidden></div>
+
+<script>
+const ROSTER=[{"id": "c002", "nome": "Ana Laura Nicolosi da Rocha", "curto": "Ana Laura", "setor": "Qualificação / Conferência", "grupo": "Grupo de backup 1 — Ana Laura", "rel": [{"id": "c005", "tipo": "regra"}, {"id": "c020", "tipo": "regra"}], "aqIni": "2025-09-06", "aqFim": "2026-09-05", "limite": "2027-08-07", "recs": []}, {"id": "c003", "nome": "Ana Luiza dos Santos Silva", "curto": "Ana Luiza dos Santos Silva", "setor": "Qualificação / Conferência", "grupo": "Sem grupo definido", "rel": [{"id": "c006", "tipo": "cad"}], "aqIni": "2026-06-03", "aqFim": "2027-06-02", "limite": "2028-05-04", "recs": [{"ini": "2026-08-10", "fim": "2026-08-24", "status": "Concluída"}, {"ini": "2026-12-15", "fim": "2026-12-29", "status": "Programada"}]}, {"id": "c009", "nome": "Carla Domingues de Oliveira Mascareli Padua", "curto": "Carla", "setor": "Qualificação / Conferência", "grupo": "Grupo de backup 2 — Ana Luiza Nizoli", "rel": [{"id": "c004", "tipo": "regra"}, {"id": "c012", "tipo": "regra"}, {"id": "c015", "tipo": "regra"}, {"id": "c021", "tipo": "cad"}, {"id": "c029", "tipo": "cad"}], "aqIni": "2026-03-21", "aqFim": "2027-03-20", "limite": "2028-02-20", "recs": [{"ini": "2027-01-20", "fim": "2027-01-29", "status": "Programada"}]}, {"id": "c011", "nome": "Felipe de Oliveira Melo", "curto": "Felipe de", "setor": "Qualificação / Conferência", "grupo": "Sem grupo definido", "rel": [], "aqIni": "2026-06-03", "aqFim": "2027-06-02", "limite": "2028-05-04", "recs": []}, {"id": "c013", "nome": "Gabriela Ferreira Belisario", "curto": "Gabriela Ferreira", "setor": "Qualificação / Conferência", "grupo": "Sem grupo definido", "rel": [], "aqIni": "2026-09-02", "aqFim": "2027-09-01", "limite": "2028-08-03", "recs": [{"ini": "2026-09-01", "fim": "2026-09-30", "status": "Em gozo"}]}, {"id": "c014", "nome": "Giovana Barbosa da Cunha", "curto": "Giovana Barbosa", "setor": "Qualificação / Conferência", "grupo": "Sem grupo definido", "rel": [], "aqIni": "2026-02-01", "aqFim": "2027-01-31", "limite": "2028-01-02", "recs": [{"ini": "2026-10-13", "fim": "2026-10-17", "status": "Em gozo"}]}, {"id": "c016", "nome": "Helen Fernandes Lourenço Mantovani", "curto": "Helen Fernandes", "setor": "Qualificação / Conferência", "grupo": "Sem grupo definido", "rel": [], "aqIni": "2025-05-02", "aqFim": "2026-05-01", "limite": "2027-04-02", "recs": [{"ini": "2026-10-05", "fim": "2026-10-24", "status": "Programada"}]}, {"id": "c017", "nome": "Isabela Eloiza de Lima Alves", "curto": "Isabela Eloiza", "setor": "Qualificação / Conferência", "grupo": "Sem grupo definido", "rel": [], "aqIni": "2025-12-02", "aqFim": "2026-12-01", "limite": "2027-11-02", "recs": []}, {"id": "c019", "nome": "Juliana Meneghetti Rodrigues Lilischkies", "curto": "Juliana Meneghetti", "setor": "Qualificação / Conferência", "grupo": "Sem grupo definido", "rel": [], "aqIni": "2026-01-05", "aqFim": "2027-01-04", "limite": "2027-12-06", "recs": []}, {"id": "c024", "nome": "Maria Eduarda Sabino", "curto": "Maria Eduarda", "setor": "Qualificação / Conferência", "grupo": "Sem grupo definido", "rel": [], "aqIni": "2026-03-18", "aqFim": "2027-03-17", "limite": "2028-02-17", "recs": [{"ini": "2026-11-04", "fim": "2026-11-18", "status": "Programada"}]}, {"id": "c025", "nome": "Nayana Pressotto Spera", "curto": "Nayana Pressotto", "setor": "Qualificação / Conferência", "grupo": "Sem grupo definido", "rel": [], "aqIni": "2026-03-12", "aqFim": "2027-03-11", "limite": "2028-02-11", "recs": [{"ini": "2027-01-26", "fim": "2027-02-09", "status": "Programada"}, {"ini": "2026-11-16", "fim": "2026-11-30", "status": "Programada"}]}, {"id": "c030", "nome": "Viviane de Sena Marques Castelo Branco Naufal", "curto": "Viviane de", "setor": "Qualificação / Conferência", "grupo": "Sem grupo definido", "rel": [], "aqIni": "2025-11-01", "aqFim": "2026-10-31", "limite": "2027-10-02", "recs": [{"ini": "2026-08-03", "fim": "2026-09-01", "status": "Concluída"}]}, {"id": "c021", "nome": "Leonardo Ambrozio Virgilio da Silva", "curto": "Leonardo Ambrozio", "setor": "Notificação e Intimação", "grupo": "Backup: Carla", "rel": [{"id": "c009", "tipo": "cad"}], "aqIni": "2026-05-05", "aqFim": "2027-05-04", "limite": "2028-04-05", "recs": []}, {"id": "c029", "nome": "Vinicius Rossi Vezenfard", "curto": "Vinicius Rossi", "setor": "Notificação e Intimação", "grupo": "Backup: Carla", "rel": [{"id": "c009", "tipo": "cad"}], "aqIni": "2026-04-03", "aqFim": "2027-04-02", "limite": "2028-03-04", "recs": [{"ini": "2026-10-05", "fim": "2026-11-03", "status": "Programada"}]}, {"id": "c004", "nome": "Ana Luiza Miranda Nizoli", "curto": "Ana Luiza Nizoli", "setor": "Atendimento", "grupo": "Grupo de backup 2 — Ana Luiza Nizoli", "rel": [{"id": "c001", "tipo": "regra"}, {"id": "c006", "tipo": "regra"}, {"id": "c007", "tipo": "regra"}, {"id": "c009", "tipo": "regra"}, {"id": "c010", "tipo": "regra"}, {"id": "c012", "tipo": "regra"}, {"id": "c015", "tipo": "regra"}, {"id": "c018", "tipo": "regra"}, {"id": "c022", "tipo": "regra"}, {"id": "c026", "tipo": "regra"}], "aqIni": "2026-02-04", "aqFim": "2027-02-03", "limite": "2028-01-05", "recs": [{"ini": "2026-09-01", "fim": "2026-09-30", "status": "Em gozo"}]}, {"id": "c005", "nome": "Aryane Santos da Silva", "curto": "Aryane", "setor": "Atendimento", "grupo": "Grupo de backup 1 — Ana Laura", "rel": [{"id": "c002", "tipo": "regra"}, {"id": "c020", "tipo": "regra"}], "aqIni": "2025-11-04", "aqFim": "2026-11-03", "limite": "2027-10-05", "recs": [{"ini": "2026-07-27", "fim": "2026-08-25", "status": "Concluída"}]}, {"id": "c010", "nome": "Cristiane Viana da Silva", "curto": "Cristiane", "setor": "Atendimento", "grupo": "Backup: Ana Luiza Nizoli", "rel": [{"id": "c004", "tipo": "regra"}], "aqIni": "2026-04-03", "aqFim": "2027-04-02", "limite": "2028-03-04", "recs": [{"ini": "2026-12-15", "fim": "2027-01-13", "status": "Programada"}]}, {"id": "c012", "nome": "Flavia Cavelagna Galvao Medina", "curto": "Flávia", "setor": "Atendimento", "grupo": "Grupo de backup 2 — Ana Luiza Nizoli", "rel": [{"id": "c004", "tipo": "regra"}, {"id": "c009", "tipo": "regra"}, {"id": "c015", "tipo": "regra"}], "aqIni": "2025-07-21", "aqFim": "2026-07-20", "limite": "2027-06-21", "recs": []}, {"id": "c015", "nome": "Grasiela Rodrigues Gomes", "curto": "Grasiela", "setor": "Atendimento", "grupo": "Grupo de backup 2 — Ana Luiza Nizoli", "rel": [{"id": "c004", "tipo": "regra"}, {"id": "c009", "tipo": "regra"}, {"id": "c012", "tipo": "regra"}], "aqIni": "2026-03-01", "aqFim": "2027-02-28", "limite": "2028-01-30", "recs": []}, {"id": "c020", "nome": "Lara Fabian da Silva Correa", "curto": "Lara", "setor": "Atendimento", "grupo": "Grupo de backup 1 — Ana Laura", "rel": [{"id": "c002", "tipo": "regra"}, {"id": "c005", "tipo": "regra"}], "aqIni": "2025-11-18", "aqFim": "2026-11-17", "limite": "2027-10-19", "recs": []}, {"id": "c001", "nome": "Agnys Vitoria Thieme Alves", "curto": "Agnys", "setor": "Registro", "grupo": "Backup: Ana Luiza Nizoli, Letícia", "rel": [{"id": "c004", "tipo": "regra"}, {"id": "c022", "tipo": "cad"}], "aqIni": "2026-05-15", "aqFim": "2027-05-14", "limite": "2028-04-15", "recs": [{"ini": "2026-10-05", "fim": "2026-10-19", "status": "Programada"}, {"ini": "2027-02-01", "fim": "2027-02-15", "status": "Programada"}]}, {"id": "c026", "nome": "Nayara Pressotto Spera", "curto": "Nayara", "setor": "Certidão", "grupo": "Backup: Ana Luiza Nizoli, Letícia", "rel": [{"id": "c004", "tipo": "regra"}, {"id": "c022", "tipo": "cad"}], "aqIni": "2026-05-02", "aqFim": "2027-05-01", "limite": "2028-04-02", "recs": [{"ini": "2026-12-15", "fim": "2027-01-13", "status": "Programada"}]}, {"id": "c006", "nome": "Beatriz Aparecida Torres de Lima", "curto": "Beatriz Aparecida", "setor": "Digitalização", "grupo": "Backup: Ana Luiza dos Santos Silva, Letícia, Ana Luiza Nizoli", "rel": [{"id": "c004", "tipo": "regra"}, {"id": "c003", "tipo": "cad"}, {"id": "c022", "tipo": "cad"}], "aqIni": "2026-02-04", "aqFim": "2027-02-03", "limite": "2028-01-05", "recs": []}, {"id": "c007", "nome": "Beatriz Santos da Silva", "curto": "Beatriz Silva", "setor": "Analista Financeiro e de R.H.", "grupo": "Backup: Ana Luiza Nizoli", "rel": [{"id": "c004", "tipo": "regra"}], "aqIni": "2025-07-04", "aqFim": "2026-07-03", "limite": "2027-06-04", "recs": [{"ini": "2027-01-11", "fim": "2027-01-25", "status": "Programada"}]}, {"id": "c018", "nome": "Joao Vitor da Rocha Ribeiro", "curto": "João Vitor", "setor": "Assistente de Inovação e Tecnologia", "grupo": "Backup: Ana Luiza Nizoli, Letícia", "rel": [{"id": "c004", "tipo": "regra"}, {"id": "c022", "tipo": "cad"}], "aqIni": "2025-08-04", "aqFim": "2026-08-03", "limite": "2027-07-05", "recs": []}, {"id": "c022", "nome": "Leticia Santos Pinheiro da Silva", "curto": "Letícia", "setor": "Assistente de Processos e R.H.", "grupo": "Backup: Ana Luiza Nizoli, João Vitor", "rel": [{"id": "c001", "tipo": "cad"}, {"id": "c004", "tipo": "regra"}, {"id": "c006", "tipo": "cad"}, {"id": "c018", "tipo": "cad"}, {"id": "c026", "tipo": "cad"}], "aqIni": "2026-03-01", "aqFim": "2027-02-28", "limite": "2028-01-30", "recs": []}, {"id": "c023", "nome": "Luiza Rodrigues da Silva", "curto": "Luiza Rodrigues", "setor": "Limpeza", "grupo": "Sem grupo definido", "rel": [], "aqIni": "2026-06-03", "aqFim": "2027-06-02", "limite": "2028-05-04", "recs": []}, {"id": "c027", "nome": "Raquel Miaissi Machado", "curto": "Raquel Miaissi", "setor": "RH", "grupo": "Sem grupo definido", "rel": [], "aqIni": "2025-07-04", "aqFim": "2026-07-03", "limite": "2027-06-04", "recs": []}];
+const ANO=2027;
+const MESES=['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+const MABR=['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+const mk=n=>ANO+'-'+String(n).padStart(2,'0'); // 1..12
+const mlabel=k=>{const [a,m]=k.split('-');return MESES[+m-1]+'/'+a};
+const fmtD=s=>s?s.split('-').reverse().join('/'):'—';
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const byId=Object.fromEntries(ROSTER.map(r=>[r.id,r]));
+const CURTO={c002:'Ana Laura',c003:'Ana Luiza Silva',c004:'Ana Luiza Nizoli'};
+const curto=n=>{const r=ROSTER.find(x=>x.nome===n);if(r&&CURTO[r.id])return CURTO[r.id];const p=n.split(' ');return p.length>1?p[0]+' '+p[p.length-1]:n};
+const when=iso=>{try{return new Date(iso).toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit',timeZone:'America/Sao_Paulo'})}catch(e){return ''}};
+const $=s=>document.querySelector(s);
+let toastT;function toast(m){const t=$('#toast');t.textContent=m;t.hidden=false;clearTimeout(toastT);toastT=setTimeout(()=>t.hidden=true,3800)}
+function ls(k,v){try{if(v===undefined)return localStorage.getItem(k);if(v===null)localStorage.removeItem(k);else localStorage.setItem(k,v)}catch(e){return null}}
+
+/* meses ocupados por férias já programadas/em gozo (estático, vindo do cadastro) */
+function mesesProg(r){const s=new Set();r.recs.forEach(x=>{let d=new Date(x.ini+'T12:00:00'),e=new Date(x.fim+'T12:00:00');for(;d<=e;d.setDate(d.getDate()+1)){const k=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0');if(k.startsWith(ANO))s.add(k)}});return s}
+const PROG=Object.fromEntries(ROSTER.map(r=>[r.id,mesesProg(r)]));
+
+/* ====== camada de dados: Firebase (padrão) ou memória (?demo) ====== */
+const DEMO=new URLSearchParams(location.search).has('demo');
+let DB=null; // {listenPref(cb,err), listenLog(cb), salvar(cid,dados,porNome,rh), logar(e)}
+let PREF={}, LOG=[], me=ls('fer_me'), rh=false, tab='mine', filtro={setor:'',pend:false};
+
+async function initDB(){
+  if(DEMO){
+    const subs=[];let store={};
+    DB={modo:'demo',
+      listenPref(cb){subs.push(cb);cb({...store});$('#dot').className='dot on';$('#liveTxt').textContent='Modo demonstração (não grava)';},
+      listenLog(cb){cb([])},
+      async salvar(cid,novo,por,rhmode){
+        const confl=conflitoDe(cid,novo.opcoes,store);
+        if(confl&&!rhmode)throw new Error(confl);
+        store={...store,[cid]:novo};subs.forEach(f=>f({...store}));
+      },
+      async logar(){}};
+    return;
+  }
+  const cfg={apiKey:"AIzaSyDmYAjYeGQ8l2wfkzD76HdY5UaHQWO7KZQ",authDomain:"rh---registro-assis.firebaseapp.com",projectId:"rh---registro-assis",storageBucket:"rh---registro-assis.firebasestorage.app",messagingSenderId:"843775357323",appId:"1:843775357323:web:911d17158b2dac72883f8e"};
+  const V='10.13.1';
+  const [{initializeApp},F]=await Promise.all([import(`https://www.gstatic.com/firebasejs/${V}/firebase-app.js`),import(`https://www.gstatic.com/firebasejs/${V}/firebase-firestore.js`)]);
+  const app=initializeApp(cfg,'ferias');const db=F.getFirestore(app);
+  DB={modo:'fb',
+    listenPref(cb,err){return F.onSnapshot(F.collection(db,'ferias_pref'),s=>{const o={};s.forEach(d=>o[d.id]=d.data());cb(o)},err)},
+    listenLog(cb){return F.onSnapshot(F.query(F.collection(db,'ferias_log'),F.orderBy('quando','desc'),F.limit(80)),s=>{cb(s.docs.map(d=>d.data()))},()=>{})},
+    async salvar(cid,novo,por,rhmode){
+      await F.runTransaction(db,async tx=>{
+        const ref=F.doc(db,'ferias_pref',cid);await tx.get(ref);
+        const outros={};
+        for(const rel of byId[cid].rel){const s=await tx.get(F.doc(db,'ferias_pref',rel.id));if(s.exists())outros[rel.id]=s.data()}
+        const confl=conflitoDe(cid,novo.opcoes,outros);
+        if(confl&&!rhmode)throw new Error(confl);
+        tx.set(ref,novo);
+      });
+    },
+    async logar(e){try{await F.addDoc(F.collection(db,'ferias_log'),e)}catch(x){}}
+  };
+}
+
+/* conflito: algum relacionado já indicou o mesmo mês ou tem férias programadas nele */
+function conflitoDe(cid,opcoes,pref){
+  for(const o of opcoes){ if(!o)continue;
+    for(const rel of byId[cid].rel){
+      const p=pref[rel.id]; const outro=byId[rel.id];
+      if(p&&(p.opcoes||[]).some(x=>x&&x.mes===o.mes)){const x=p.opcoes.find(x=>x&&x.mes===o.mes);return `${mlabel(o.mes)} já foi indicado por ${curto(outro.nome)} (quem se cobre não pode sair junto). Escolha outro mês.`}
+      if(PROG[rel.id]&&PROG[rel.id].has(o.mes))return `${curto(outro.nome)} já tem férias programadas em ${mlabel(o.mes)}. Escolha outro mês.`;
+    }}
+  return null;
+}
+/* conflitos exibidos no quadro (pares com mesmo mês indicado) */
+function conflitosVivos(){
+  const res={}; // id -> Set de meses em conflito
+  ROSTER.forEach(a=>{const pa=PREF[a.id];if(!pa)return;(pa.opcoes||[]).forEach(o=>{if(!o)return;
+    a.rel.forEach(r=>{const pb=PREF[r.id];const hit=(pb&&(pb.opcoes||[]).some(x=>x&&x.mes===o.mes))||(PROG[r.id]&&PROG[r.id].has(o.mes));
+      if(hit)(res[a.id]=res[a.id]||new Set()).add(o.mes)})})});
+  return res;
+}
+
+/* ====== telas ====== */
+function render(){
+  $('#whoTxt').innerHTML=me?`Você: <b>${esc(curto(byId[me].nome))}</b>`+(rh?' · <b>Modo RH</b>':''):'';
+  $('#trocar').hidden=!me;
+  if(!me){renderLogin();return}
+  const tabs=[['mine','Minhas indicações'],['board','Quadro por setor'],['cal','Calendário '+ANO],['log','Atividade']];
+  $('#app').innerHTML=(rh?'<div class="rhbar">Modo RH ativo: você pode editar a indicação de qualquer colaborador e ignorar bloqueios de conflito. Alterações ficam registradas na aba Atividade.</div>':'')+
+   '<div class="tabs noprint" role="tablist">'+tabs.map(t=>`<button class="tab" role="tab" data-t="${t[0]}" aria-selected="${tab===t[0]}">${t[1]}</button>`).join('')+'</div><div id="panel"></div>';
+  document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{tab=b.dataset.t;render()});
+  ({mine:renderMine,board:renderBoard,cal:renderCal,log:renderLog})[tab]();
+}
+function renderLogin(){
+  const setores=[...new Set(ROSTER.map(r=>r.setor))];
+  $('#app').innerHTML=`<div class="card center"><h2>Quem é você?</h2><p class="hint">Escolha seu nome para indicar os meses de férias. Todos os colegas conseguem ver o que cada pessoa indicou, com nome e horário.</p>
+  <div class="field"><label for="selMe">Seu nome</label><select id="selMe"><option value="">Selecione…</option>${setores.map(s=>`<optgroup label="${esc(s)}">${ROSTER.filter(r=>r.setor===s).map(r=>`<option value="${r.id}">${esc(r.nome)}</option>`).join('')}</optgroup>`).join('')}</select></div>
+  <button class="pri" id="go">Entrar</button></div>`;
+  $('#go').onclick=()=>{const v=$('#selMe').value;if(!v){toast('Escolha seu nome na lista.');return}me=v;ls('fer_me',v);tab='mine';render()};
+}
+let editTarget=null; // em modo RH, colaborador sendo editado
+function alvoId(){return rh&&editTarget?editTarget:me}
+function renderMine(){
+  const id=alvoId(),r=byId[id],p=PREF[id]||{opcoes:[null,null,null],obs:''};
+  const op=[0,1,2].map(i=>(p.opcoes||[])[i]||null);
+  const rels=r.rel.map(x=>{const o=byId[x.id],po=PREF[x.id];const ms=(po?.opcoes||[]).filter(Boolean).map(m=>MABR[+m.mes.slice(5)-1]).join(', ');return `<li><b>${esc(curto(o.nome))}</b>${x.tipo==='cad'?' <span class="hint">(cadastro)</span>':''}: ${ms||'<span class="hint">ainda não indicou</span>'}</li>`}).join('');
+  const optsHTML=i=>{const sel=op[i]?.mes||'';return `<option value="">— não indicar —</option>`+Array.from({length:12},(_,k)=>{const m=mk(k+1);const bloq=bloqueio(id,m,i);return `<option value="${m}" ${sel===m?'selected':''} ${bloq&&!rh?'disabled':''}>${MESES[k]}${bloq?' — '+esc(bloq):''}</option>`}).join('')};
+  const hoje=new Date().toISOString().slice(0,10);const fechaTxt=r.aqFim&&r.aqFim<hoje?'Período aquisitivo completou em':'Período aquisitivo em curso fecha em';
+  $('#panel').innerHTML=`<div class="dates"><div class="dcard"><div class="l">${fechaTxt}</div><div class="v">${fmtD(r.aqFim)}</div><div class="s">Período: ${fmtD(r.aqIni)} a ${fmtD(r.aqFim)}</div></div><div class="dcard lim"><div class="l">Data-limite para gozo</div><div class="v">${fmtD(r.limite)}</div><div class="s">As férias precisam ser gozadas até esta data.</div></div></div><div class="grid2"><div class="card"><h2>${rh&&editTarget?'Indicações de '+esc(r.nome):'Suas indicações'}</h2>
+    ${rh?`<div class="field"><label for="selAlvo">Editar em nome de</label><select id="selAlvo">${ROSTER.map(x=>`<option value="${x.id}" ${x.id===id?'selected':''}>${esc(x.nome)}</option>`).join('')}</select></div>`:''}
+    ${[0,1,2].map(i=>`<div class="field"><label for="op${i}">${i+1}ª opção de mês</label><select id="op${i}">${optsHTML(i)}</select>${op[i]?`<span class="hint">Indicado por ${esc(op[i].por)} em ${when(op[i].quando)}</span>`:''}<div id="aviso${i}"></div></div>`).join('')}
+    <div class="field"><label for="obs">Observação (opcional)</label><textarea id="obs" rows="2" maxlength="200">${esc(p.obs||'')}</textarea></div>
+    <div id="erro"></div><button class="pri" id="salvar">Salvar indicações</button> <span class="hint">As três opções devem ser meses diferentes.</span></div>
+   <div class="card"><h2>Seus dados</h2><dl class="kv"><dt>Colaborador</dt><dd>${esc(r.nome)}</dd><dt>Setor</dt><dd>${esc(r.setor)}</dd><dt>Grupo de backup</dt><dd>${esc(r.grupo)}</dd></dl>
+   <h3>Não pode sair no mesmo mês que</h3>${r.rel.length?`<ul style="margin:0;padding-left:18px">${rels}</ul>`:'<p class="hint">Nenhuma relação de cobertura cadastrada. Confirme com o RH.</p>'}
+   ${r.recs.length?`<h3>Férias já programadas</h3><ul style="margin:0;padding-left:18px">${r.recs.map(x=>`<li>${fmtD(x.ini)} a ${fmtD(x.fim)} (${esc(x.status)})</li>`).join('')}</ul>`:''}</div></div>`;
+  const aviso=()=>{[0,1,2].forEach(i=>{const m=$('#op'+i).value;let h='';if(m){if(r.limite&&m+'-01'>r.limite)h=`<div class="msg warn">Este mês é depois da data-limite (${fmtD(r.limite)}). Confirme com o RH antes.</div>`;}$('#aviso'+i).innerHTML=h})};
+  [0,1,2].forEach(i=>$('#op'+i).onchange=aviso);aviso();
+  const sa=$('#selAlvo');if(sa)sa.onchange=()=>{editTarget=sa.value;renderMine()};
+  $('#salvar').onclick=async()=>{
+    const ms=[0,1,2].map(i=>$('#op'+i).value);const usados=ms.filter(Boolean);
+    if(new Set(usados).size!==usados.length){$('#erro').innerHTML='<div class="msg bad">Escolha meses diferentes nas três opções.</div>';return}
+    const por=rh?'RH (gestão)':curto(byId[me].nome);const agora=new Date().toISOString();
+    const opcoes=ms.map((m,i)=>{if(!m)return null;const antes=op[i];return antes&&antes.mes===m?antes:{mes:m,por,quando:agora}});
+    const novo={colabId:id,opcoes,obs:$('#obs').value.trim(),atualizadoPor:por,atualizadoEm:agora};
+    $('#salvar').disabled=true;$('#erro').innerHTML='';
+    try{
+      await DB.salvar(id,novo,por,rh);
+      opcoes.forEach((o,i)=>{const a=op[i];if(o&&(!a||a.mes!==o.mes))DB.logar({quando:agora,quem:por,colabId:id,colab:r.nome,acao:a?'alterou':'indicou',slot:i+1,mes:o.mes,anterior:a?a.mes:null});if(!o&&a)DB.logar({quando:agora,quem:por,colabId:id,colab:r.nome,acao:'removeu',slot:i+1,mes:null,anterior:a.mes})});
+      toast('Indicações salvas.');
+    }catch(e){$('#erro').innerHTML='<div class="msg bad">'+esc(e.message||'Não foi possível salvar. Tente de novo.')+'</div>'}
+    $('#salvar').disabled=false;
+  };
+}
+function bloqueio(id,m,slot){
+  const r=byId[id];
+  for(const rel of r.rel){const o=byId[rel.id];if(PROG[rel.id]&&PROG[rel.id].has(m))return curto(o.nome)+' tem férias';
+    const p=PREF[rel.id];if(p&&(p.opcoes||[]).some(x=>x&&x.mes===m))return 'indicado por '+curto(o.nome)}
+  return '';
+}
+function optCell(o){return o?`<span class="opt"><b>${MABR[+o.mes.slice(5)-1]}/${o.mes.slice(2,4)}</b><small>${esc(o.por)} · ${when(o.quando)}</small></span>`:'<span class="hint">—</span>'}
+function renderBoard(){
+  const setores=[...new Set(ROSTER.map(r=>r.setor))];const cv=conflitosVivos();
+  const lista=ROSTER.filter(r=>(!filtro.setor||r.setor===filtro.setor)&&(!filtro.pend||!(PREF[r.id]&&(PREF[r.id].opcoes||[]).some(Boolean))));
+  const done=ROSTER.filter(r=>PREF[r.id]&&(PREF[r.id].opcoes||[]).some(Boolean)).length;
+  let rows='',cur='';
+  lista.forEach(r=>{if(r.setor!==cur){cur=r.setor;rows+=`<tr class="sec"><td colspan="9">${esc(cur)}</td></tr>`}
+    const p=PREF[r.id]||{opcoes:[]};const tem=(p.opcoes||[]).some(Boolean);const c=cv[r.id];
+    rows+=`<tr class="${r.id===me?'me':''}"><td class="nm">${esc(r.nome)}</td><td>${esc(r.grupo)}</td><td class="dd">${fmtD(r.aqFim)}<small class="hint" style="display:block;font-weight:400">início ${fmtD(r.aqIni)}</small></td><td class="dd">${fmtD(r.limite)}</td>${[0,1,2].map(i=>`<td>${optCell((p.opcoes||[])[i])}</td>`).join('')}<td>${c?'<span class="chip bad">Conflito</span>':tem?'<span class="chip ok">Indicado</span>':'<span class="chip pend">Pendente</span>'}${p.obs?`<small class="hint" style="display:block">${esc(p.obs)}</small>`:''}</td><td>${r.rel.length?esc(r.rel.map(x=>curto(byId[x.id].nome)).join(', ')):'<span class="hint">não cadastrado</span>'}</td></tr>`});
+  $('#panel').innerHTML=`<div class="tools"><div><b>${done}</b> de ${ROSTER.length} já indicaram<div class="prog"><i style="width:${done/ROSTER.length*100}%"></i></div></div>
+   <select id="fSet" aria-label="Setor"><option value="">Todos os setores</option>${setores.map(s=>`<option ${filtro.setor===s?'selected':''}>${esc(s)}</option>`).join('')}</select>
+   <label><input type="checkbox" id="fPend" ${filtro.pend?'checked':''}> só pendentes</label><button class="noprint" onclick="window.print()">Imprimir</button></div>
+   <div class="tw"><table><thead><tr><th>Colaborador</th><th>Grupo de backup</th><th>Período aquisitivo fecha em</th><th>Data-limite para gozo</th><th>1ª opção</th><th>2ª opção</th><th>3ª opção</th><th>Situação</th><th>Não pode coincidir com</th></tr></thead><tbody>${rows||'<tr><td colspan="9">Nenhum colaborador.</td></tr>'}</tbody></table></div>`;
+  $('#fSet').onchange=e=>{filtro.setor=e.target.value;renderBoard()};$('#fPend').onchange=e=>{filtro.pend=e.target.checked;renderBoard()};
+}
+function renderCal(){
+  const cv=conflitosVivos();let rows='',cur='';
+  ROSTER.forEach(r=>{if(r.setor!==cur){cur=r.setor;rows+=`<tr class="sec"><td colspan="13">${esc(cur)}</td></tr>`}
+    const p=PREF[r.id]||{opcoes:[]};
+    rows+=`<tr class="${r.id===me?'me':''}"><td class="nm">${esc(curto(r.nome))}</td>`+Array.from({length:12},(_,k)=>{const m=mk(k+1);let h='';
+      const oi=(p.opcoes||[]).findIndex(o=>o&&o.mes===m);
+      if(PROG[r.id].has(m))h+=`<span class="p pp" title="Férias já programadas">Prog.</span>`;
+      if(oi>=0){const bad=cv[r.id]&&cv[r.id].has(m);const o=p.opcoes[oi];h+=`<span class="p ${bad?'px':'p'+(oi+1)}" title="${esc(o.por)} · ${when(o.quando)}">${oi+1}ª</span>`}
+      return `<td class="c">${h}</td>`}).join('')+'</tr>'});
+  $('#panel').innerHTML=`<div class="legend"><span><i style="background:var(--o1)"></i>1ª opção</span><span><i style="background:var(--o2)"></i>2ª opção</span><span><i style="background:var(--o3)"></i>3ª opção</span><span><i style="background:var(--prog)"></i>Férias já programadas</span><span><i style="background:var(--bad)"></i>Conflito entre quem se cobre</span></div>
+  <div class="tw cal"><table><thead><tr><th>Colaborador</th>${MABR.map(m=>`<th class="m">${m}</th>`).join('')}</tr></thead><tbody>${rows}</tbody></table></div>`;
+}
+function renderLog(){
+  $('#panel').innerHTML=`<div class="card"><h2>Últimas movimentações</h2>${LOG.length?`<ul class="log">${LOG.map(l=>`<li><b>${esc(l.quem)}</b> ${l.acao==='removeu'?'removeu a '+l.slot+'ª opção ('+(l.anterior?mlabel(l.anterior):'')+')':(l.acao==='alterou'?'alterou a '+l.slot+'ª opção para <b>'+mlabel(l.mes)+'</b>':'indicou <b>'+mlabel(l.mes)+'</b> como '+l.slot+'ª opção')}${l.quem!==curto(l.colab)&&l.colab?' de <b>'+esc(curto(l.colab))+'</b>':''}<br><small>${when(l.quando)}</small></li>`).join('')}</ul>`:'<p class="hint">Ainda não há movimentações.</p>'}</div>`;
+}
+
+/* ====== inicialização ====== */
+$('#trocar').onclick=()=>{me=null;rh=false;editTarget=null;ls('fer_me',null);render()};
+$('#rhLnk').onclick=()=>{rh=!rh;editTarget=null;toast(rh?'Modo RH ligado.':'Modo RH desligado.');render()};
+if(me&&!byId[me])me=null;
+(async()=>{
+  render();
+  try{
+    await initDB();
+    if(DB.modo==='fb'){
+      DB.listenPref(o=>{PREF=o;$('#dot').className='dot on';$('#liveTxt').textContent='Ao vivo';render2()},e=>{$('#dot').className='dot off';$('#liveTxt').textContent='Sem conexão';$('#banner').innerHTML='<div class="ban">Não foi possível conectar ao banco de dados ('+esc(e.code||e.message)+'). Se o problema continuar, avise o RH.</div>'});
+      DB.listenLog(l=>{LOG=l;if(tab==='log')render2()});
+    }else{DB.listenPref(o=>{PREF=o;render2()});}
+  }catch(e){$('#dot').className='dot off';$('#liveTxt').textContent='Sem conexão';$('#banner').innerHTML='<div class="ban">Não foi possível carregar o aplicativo ('+esc(e.message)+').</div>'}
+})();
+/* evita perder o que está sendo digitado quando chega atualização de outro colaborador */
+function render2(){
+  const ae=document.activeElement;
+  if(tab==='mine'&&me&&ae&&ae.closest&&ae.closest('#panel')&&['SELECT','TEXTAREA'].includes(ae.tagName)){ // só atualiza avisos de bloqueio
+    const id=alvoId();[0,1,2].forEach(i=>{const s=$('#op'+i);if(!s)return;[...s.options].forEach(o=>{if(!o.value)return;const b=bloqueio(id,o.value,i);const k=+o.value.slice(5)-1;o.disabled=!!b&&!rh;o.textContent=MESES[k]+(b?' — '+b:'')})});return}
+  render();
+}
+</script>
+</body>
+</html>
