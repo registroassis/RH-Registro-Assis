@@ -98,6 +98,11 @@ const mk=n=>ANO+'-'+String(n).padStart(2,'0'); // 1..12
 const mlabel=k=>{const [a,m]=k.split('-');return MESES[+m-1]+'/'+a};
 const fmtD=s=>s?s.split('-').reverse().join('/'):'—';
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+/* quem é só backup (não é de um setor específico) aparece numa seção própria nas listas */
+const SO_BACKUP={c002:'Backup do Atendimento',c009:'Backup do Atendimento',c004:'Backup do Atendimento'};
+ROSTER.forEach(r=>{r.secao=SO_BACKUP[r.id]||r.setor});
+{const ord=[...new Set(ROSTER.map(r=>r.secao))].filter(s=>s!=='Backup do Atendimento').concat(['Backup do Atendimento']);
+ ROSTER.sort((a,b)=>ord.indexOf(a.secao)-ord.indexOf(b.secao));}
 const byId=Object.fromEntries(ROSTER.map(r=>[r.id,r]));
 const CURTO={c002:'Ana Laura',c003:'Ana Luiza Silva',c004:'Ana Luiza Nizoli'};
 const curto=n=>{const r=ROSTER.find(x=>x.nome===n);if(r&&CURTO[r.id])return CURTO[r.id];const p=n.split(' ');return p.length>1?p[0]+' '+p[p.length-1]:n};
@@ -181,9 +186,9 @@ function render(){
   ({mine:renderMine,board:renderBoard,cal:renderCal,log:renderLog})[tab]();
 }
 function renderLogin(){
-  const setores=[...new Set(ROSTER.map(r=>r.setor))];
+  const setores=[...new Set(ROSTER.map(r=>r.secao))];
   $('#app').innerHTML=`<div class="card center"><h2>Quem é você?</h2><p class="hint">Escolha seu nome para indicar os meses de férias. Todos os colegas conseguem ver o que cada pessoa indicou, com nome e horário.</p>
-  <div class="field"><label for="selMe">Seu nome</label><select id="selMe"><option value="">Selecione…</option>${setores.map(s=>`<optgroup label="${esc(s)}">${ROSTER.filter(r=>r.setor===s).map(r=>`<option value="${r.id}">${esc(r.nome)}</option>`).join('')}</optgroup>`).join('')}</select></div>
+  <div class="field"><label for="selMe">Seu nome</label><select id="selMe"><option value="">Selecione…</option>${setores.map(s=>`<optgroup label="${esc(s)}">${ROSTER.filter(r=>r.secao===s).map(r=>`<option value="${r.id}">${esc(r.nome)}</option>`).join('')}</optgroup>`).join('')}</select></div>
   <button class="pri" id="go">Entrar</button></div>`;
   $('#go').onclick=()=>{const v=$('#selMe').value;if(!v){toast('Escolha seu nome na lista.');return}me=v;ls('fer_me',v);tab='mine';render()};
 }
@@ -200,7 +205,7 @@ function renderMine(){
     ${[0,1,2].map(i=>`<div class="field"><label for="op${i}">${i+1}ª opção de mês</label><select id="op${i}">${optsHTML(i)}</select>${op[i]?`<span class="hint">Indicado por ${esc(op[i].por)} em ${when(op[i].quando)}</span>`:''}<div id="aviso${i}"></div></div>`).join('')}
     <div class="field"><label for="obs">Observação (opcional)</label><textarea id="obs" rows="2" maxlength="200">${esc(p.obs||'')}</textarea></div>
     <div id="erro"></div><button class="pri" id="salvar">Salvar indicações</button> <span class="hint">As três opções devem ser meses diferentes.</span></div>
-   <div class="card"><h2>Seus dados</h2><dl class="kv"><dt>Colaborador</dt><dd>${esc(r.nome)}</dd><dt>Setor</dt><dd>${esc(r.setor)}</dd><dt>Grupo de backup</dt><dd>${esc(r.grupo)}</dd></dl>
+   <div class="card"><h2>Seus dados</h2><dl class="kv"><dt>Colaborador</dt><dd>${esc(r.nome)}</dd><dt>Setor</dt><dd>${esc(r.id==='c004'?'Backup do Atendimento (e também de Registro, Financeiro, Digitalização, Certidão, Inovação e Processos e RH)':(r.secao==='Backup do Atendimento'?'Backup do Atendimento':r.setor))}</dd><dt>Grupo de backup</dt><dd>${esc(r.grupo)}</dd></dl>
    <h3>Não pode sair no mesmo mês que</h3>${r.rel.length?`<ul style="margin:0;padding-left:18px">${rels}</ul>`:'<p class="hint">Nenhuma relação de cobertura cadastrada. Confirme com o RH.</p>'}
    ${r.recs.length?`<h3>Férias já programadas</h3><ul style="margin:0;padding-left:18px">${r.recs.map(x=>`<li>${fmtD(x.ini)} a ${fmtD(x.fim)} (${esc(x.status)})</li>`).join('')}</ul>`:''}</div></div>`;
   const aviso=()=>{[0,1,2].forEach(i=>{const m=$('#op'+i).value;let h='';if(m){if(r.limite&&m+'-01'>r.limite)h=`<div class="msg warn">Este mês é depois da data-limite (${fmtD(r.limite)}). Confirme com o RH antes.</div>`;}$('#aviso'+i).innerHTML=h})};
@@ -229,11 +234,11 @@ function bloqueio(id,m,slot){
 }
 function optCell(o){return o?`<span class="opt"><b>${MABR[+o.mes.slice(5)-1]}/${o.mes.slice(2,4)}</b><small>${esc(o.por)} · ${when(o.quando)}</small></span>`:'<span class="hint">—</span>'}
 function renderBoard(){
-  const setores=[...new Set(ROSTER.map(r=>r.setor))];const cv=conflitosVivos();
-  const lista=ROSTER.filter(r=>(!filtro.setor||r.setor===filtro.setor)&&(!filtro.pend||!(PREF[r.id]&&(PREF[r.id].opcoes||[]).some(Boolean))));
+  const setores=[...new Set(ROSTER.map(r=>r.secao))];const cv=conflitosVivos();
+  const lista=ROSTER.filter(r=>(!filtro.setor||r.secao===filtro.setor)&&(!filtro.pend||!(PREF[r.id]&&(PREF[r.id].opcoes||[]).some(Boolean))));
   const done=ROSTER.filter(r=>PREF[r.id]&&(PREF[r.id].opcoes||[]).some(Boolean)).length;
   let rows='',cur='';
-  lista.forEach(r=>{if(r.setor!==cur){cur=r.setor;rows+=`<tr class="sec"><td colspan="9">${esc(cur)}</td></tr>`}
+  lista.forEach(r=>{if(r.secao!==cur){cur=r.secao;rows+=`<tr class="sec"><td colspan="9">${esc(cur)}</td></tr>`}
     const p=PREF[r.id]||{opcoes:[]};const tem=(p.opcoes||[]).some(Boolean);const c=cv[r.id];
     rows+=`<tr class="${r.id===me?'me':''}"><td class="nm">${esc(r.nome)}</td><td>${esc(r.grupo)}</td><td class="dd">${fmtD(r.aqFim)}<small class="hint" style="display:block;font-weight:400">início ${fmtD(r.aqIni)}</small></td><td class="dd">${fmtD(r.limite)}</td>${[0,1,2].map(i=>`<td>${optCell((p.opcoes||[])[i])}</td>`).join('')}<td>${c?'<span class="chip bad">Conflito</span>':tem?'<span class="chip ok">Indicado</span>':'<span class="chip pend">Pendente</span>'}${p.obs?`<small class="hint" style="display:block">${esc(p.obs)}</small>`:''}</td><td>${r.rel.length?esc(r.rel.map(x=>curto(byId[x.id].nome)).join(', ')):'<span class="hint">não cadastrado</span>'}</td></tr>`});
   $('#panel').innerHTML=`<div class="tools"><div><b>${done}</b> de ${ROSTER.length} já indicaram<div class="prog"><i style="width:${done/ROSTER.length*100}%"></i></div></div>
@@ -244,7 +249,7 @@ function renderBoard(){
 }
 function renderCal(){
   const cv=conflitosVivos();let rows='',cur='';
-  ROSTER.forEach(r=>{if(r.setor!==cur){cur=r.setor;rows+=`<tr class="sec"><td colspan="13">${esc(cur)}</td></tr>`}
+  ROSTER.forEach(r=>{if(r.secao!==cur){cur=r.secao;rows+=`<tr class="sec"><td colspan="13">${esc(cur)}</td></tr>`}
     const p=PREF[r.id]||{opcoes:[]};
     rows+=`<tr class="${r.id===me?'me':''}"><td class="nm">${esc(curto(r.nome))}</td>`+Array.from({length:12},(_,k)=>{const m=mk(k+1);let h='';
       const oi=(p.opcoes||[]).findIndex(o=>o&&o.mes===m);
