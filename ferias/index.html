@@ -85,7 +85,7 @@ footer a,footer button.lnk{background:none;border:0;padding:0;font:inherit;color
 </header>
 <div id="banner"></div>
 <main id="app"></main>
-<footer class="noprint"><span>Dados de período e data-limite: relatório da folha de 18/09/2026.</span><button class="lnk" id="rhLnk">Modo RH</button></footer>
+<footer class="noprint"><span>Dados de período e data-limite: relatório da folha de 18/09/2026.</span><button class="lnk" id="rhLnk" hidden>Modo RH</button></footer>
 </div>
 <div id="toast" class="toast" hidden></div>
 
@@ -99,6 +99,8 @@ const mlabel=k=>{const [a,m]=k.split('-');return MESES[+m-1]+'/'+a};
 const fmtD=s=>s?s.split('-').reverse().join('/'):'—';
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 /* quem é só backup (não é de um setor específico) aparece numa seção própria nas listas */
+/* quem enxerga Quadro, Calendário e Atividade (os demais só veem 'Minhas indicações') */
+const VE_TUDO=new Set(['c007','c025','c030']);
 const SO_BACKUP={c004:'Backup'};
 ROSTER.forEach(r=>{r.secao=SO_BACKUP[r.id]||r.setor});
 {const ord=[...new Set(ROSTER.map(r=>r.secao))].filter(s=>s!=='Backup').concat(['Backup']);
@@ -179,9 +181,11 @@ function render(){
   $('#whoTxt').innerHTML=me?`Você: <b>${esc(curto(byId[me].nome))}</b>`+(rh?' · <b>Modo RH</b>':''):'';
   $('#trocar').hidden=!me;
   if(!me){renderLogin();return}
-  const tabs=[['mine','Minhas indicações'],['board','Quadro por setor'],['cal','Calendário '+ANO],['log','Atividade']];
+  const pode=VE_TUDO.has(me);if(!pode){tab='mine';rh=false;editTarget=null}
+  const tabs=pode?[['mine','Minhas indicações'],['board','Quadro por setor'],['cal','Calendário '+ANO],['log','Atividade']]:[];
+  $('#rhLnk').hidden=!pode;
   $('#app').innerHTML=(rh?'<div class="rhbar">Modo RH ativo: você pode editar a indicação de qualquer colaborador e ignorar bloqueios de conflito. Alterações ficam registradas na aba Atividade.</div>':'')+
-   '<div class="tabs noprint" role="tablist">'+tabs.map(t=>`<button class="tab" role="tab" data-t="${t[0]}" aria-selected="${tab===t[0]}">${t[1]}</button>`).join('')+'</div><div id="panel"></div>';
+   (tabs.length?'<div class="tabs noprint" role="tablist">'+tabs.map(t=>`<button class="tab" role="tab" data-t="${t[0]}" aria-selected="${tab===t[0]}">${t[1]}</button>`).join('')+'</div>':'')+'<div id="panel"></div>';
   document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{tab=b.dataset.t;render()});
   ({mine:renderMine,board:renderBoard,cal:renderCal,log:renderLog})[tab]();
 }
