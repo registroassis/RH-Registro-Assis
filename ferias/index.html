@@ -84,18 +84,20 @@ footer a,footer button.lnk{background:none;border:0;padding:0;font:inherit;color
 <body>
 <div class="w">
 <header>
-  <div><h1>Indicação de Férias 2027</h1><p class="sub">Registro de Imóveis · Assis/SP · escolha até 3 meses de preferência</p></div>
+  <div><h1 id="ttl">Indicação de Férias</h1><p class="sub">Registro de Imóveis · Assis/SP · escolha até 3 meses de preferência</p></div>
   <div class="who noprint"><span class="live"><span class="dot" id="dot"></span><span id="liveTxt">Conectando…</span></span><span id="whoTxt"></span><button id="trocar" hidden>Trocar</button></div>
 </header>
 <div id="banner"></div>
 <main id="app"></main>
-<footer class="noprint"><span>Dados de período e data-limite: relatório da folha de 18/09/2026.</span><button class="lnk" id="rhLnk" hidden>Modo RH</button></footer>
+<footer class="noprint"><span id="fonteTxt">Dados de período e data-limite: relatório da folha.</span><button class="lnk" id="rhLnk" hidden>Modo RH</button></footer>
 </div>
 <div id="toast" class="toast" hidden></div>
 
 <script>
-const ROSTER=[{"id": "c002", "nome": "Ana Laura Nicolosi da Rocha", "curto": "Ana Laura", "setor": "Qualificação", "grupo": "Grupo de backup 1 — Ana Laura", "rel": [{"id": "c003", "tipo": "regra"}, {"id": "c005", "tipo": "regra"}, {"id": "c011", "tipo": "regra"}, {"id": "c013", "tipo": "regra"}, {"id": "c014", "tipo": "regra"}, {"id": "c016", "tipo": "regra"}, {"id": "c017", "tipo": "regra"}, {"id": "c019", "tipo": "regra"}, {"id": "c020", "tipo": "regra"}, {"id": "c024", "tipo": "regra"}, {"id": "c025", "tipo": "regra"}, {"id": "c030", "tipo": "regra"}], "aqIni": "2025-09-06", "aqFim": "2026-09-05", "limite": "2027-08-07", "recs": []}, {"id": "c003", "nome": "Ana Luiza dos Santos Silva", "curto": "Ana Luiza dos Santos Silva", "setor": "Qualificação", "grupo": "Backup: Viviane Naufal, Juliana Lilischkies", "rel": [{"id": "c002", "tipo": "regra"}, {"id": "c011", "tipo": "regra"}, {"id": "c013", "tipo": "regra"}, {"id": "c014", "tipo": "regra"}, {"id": "c016", "tipo": "regra"}, {"id": "c017", "tipo": "regra"}, {"id": "c019", "tipo": "regra"}, {"id": "c024", "tipo": "regra"}, {"id": "c025", "tipo": "regra"}, {"id": "c030", "tipo": "regra"}], "aqIni": "2026-06-03", "aqFim": "2027-06-02", "limite": "2028-05-04", "recs": [{"ini": "2026-08-10", "fim": "2026-08-24", "status": "Concluída"}, {"ini": "2026-12-15", "fim": "2026-12-29", "status": "Programada"}]}, {"id": "c009", "nome": "Carla Domingues de Oliveira Mascareli Padua", "curto": "Carla", "setor": "Qualificação", "grupo": "Grupo de backup 2 — Ana Luiza Nizoli", "rel": [{"id": "c004", "tipo": "regra"}, {"id": "c005", "tipo": "regra"}, {"id": "c010", "tipo": "regra"}, {"id": "c012", "tipo": "regra"}, {"id": "c015", "tipo": "regra"}, {"id": "c020", "tipo": "regra"}], "aqIni": "2026-03-21", "aqFim": "2027-03-20", "limite": "2028-02-20", "recs": [{"ini": "2027-01-20", "fim": "2027-01-29", "status": "Programada"}]}, {"id": "c011", "nome": "Felipe de Oliveira Melo", "curto": "Felipe Melo", "setor": "Qualificação", "grupo": "Backup: Ana Laura", "rel": [{"id": "c002", "tipo": "regra"}, {"id": "c003", "tipo": "regra"}, {"id": "c013", "tipo": "regra"}, {"id": "c014", "tipo": "regra"}, {"id": "c016", "tipo": "regra"}, {"id": "c017", "tipo": "regra"}, {"id": "c019", "tipo": "regra"}, {"id": "c024", "tipo": "regra"}, {"id": "c025", "tipo": "regra"}, {"id": "c030", "tipo": "regra"}], "aqIni": "2026-06-03", "aqFim": "2027-06-02", "limite": "2028-05-04", "recs": []}, {"id": "c013", "nome": "Gabriela Ferreira Belisario", "curto": "Gabriela Belisario", "setor": "Qualificação", "grupo": "Backup: Ana Laura", "rel": [{"id": "c002", "tipo": "regra"}, {"id": "c003", "tipo": "regra"}, {"id": "c011", "tipo": "regra"}, {"id": "c014", "tipo": "regra"}, {"id": "c016", "tipo": "regra"}, {"id": "c017", "tipo": "regra"}, {"id": "c019", "tipo": "regra"}, {"id": "c024", "tipo": "regra"}, {"id": "c025", "tipo": "regra"}, {"id": "c030", "tipo": "regra"}], "aqIni": "2026-09-02", "aqFim": "2027-09-01", "limite": "2028-08-03", "recs": [{"ini": "2026-09-01", "fim": "2026-09-30", "status": "Em gozo"}]}, {"id": "c014", "nome": "Giovana Barbosa da Cunha", "curto": "Giovana Cunha", "setor": "Qualificação", "grupo": "Backup: Ana Laura", "rel": [{"id": "c002", "tipo": "regra"}, {"id": "c003", "tipo": "regra"}, {"id": "c011", "tipo": "regra"}, {"id": "c013", "tipo": "regra"}, {"id": "c016", "tipo": "regra"}, {"id": "c017", "tipo": "regra"}, {"id": "c019", "tipo": "regra"}, {"id": "c024", "tipo": "regra"}, {"id": "c025", "tipo": "regra"}, {"id": "c030", "tipo": "regra"}], "aqIni": "2026-02-01", "aqFim": "2027-01-31", "limite": "2028-01-02", "recs": [{"ini": "2026-10-13", "fim": "2026-10-17", "status": "Em gozo"}]}, {"id": "c016", "nome": "Helen Fernandes Lourenço Mantovani", "curto": "Helen Mantovani", "setor": "Qualificação", "grupo": "Backup: Ana Laura", "rel": [{"id": "c002", "tipo": "regra"}, {"id": "c003", "tipo": "regra"}, {"id": "c011", "tipo": "regra"}, {"id": "c013", "tipo": "regra"}, {"id": "c014", "tipo": "regra"}, {"id": "c017", "tipo": "regra"}, {"id": "c019", "tipo": "regra"}, {"id": "c024", "tipo": "regra"}, {"id": "c025", "tipo": "regra"}, {"id": "c030", "tipo": "regra"}], "aqIni": "2025-05-02", "aqFim": "2026-05-01", "limite": "2027-04-02", "recs": [{"ini": "2026-10-05", "fim": "2026-10-24", "status": "Programada"}]}, {"id": "c017", "nome": "Isabela Eloiza de Lima Alves", "curto": "Isabela Alves", "setor": "Qualificação", "grupo": "Backup: Ana Laura", "rel": [{"id": "c002", "tipo": "regra"}, {"id": "c003", "tipo": "regra"}, {"id": "c011", "tipo": "regra"}, {"id": "c013", "tipo": "regra"}, {"id": "c014", "tipo": "regra"}, {"id": "c016", "tipo": "regra"}, {"id": "c019", "tipo": "regra"}, {"id": "c024", "tipo": "regra"}, {"id": "c025", "tipo": "regra"}, {"id": "c030", "tipo": "regra"}], "aqIni": "2025-12-02", "aqFim": "2026-12-01", "limite": "2027-11-02", "recs": []}, {"id": "c019", "nome": "Juliana Meneghetti Rodrigues Lilischkies", "curto": "Juliana Lilischkies", "setor": "Qualificação", "grupo": "Backup: Ana Laura", "rel": [{"id": "c002", "tipo": "regra"}, {"id": "c003", "tipo": "regra"}, {"id": "c011", "tipo": "regra"}, {"id": "c013", "tipo": "regra"}, {"id": "c014", "tipo": "regra"}, {"id": "c016", "tipo": "regra"}, {"id": "c017", "tipo": "regra"}, {"id": "c024", "tipo": "regra"}, {"id": "c025", "tipo": "regra"}, {"id": "c030", "tipo": "regra"}], "aqIni": "2026-01-05", "aqFim": "2027-01-04", "limite": "2027-12-06", "recs": []}, {"id": "c024", "nome": "Maria Eduarda Sabino", "curto": "Maria Sabino", "setor": "Qualificação", "grupo": "Backup: Ana Laura", "rel": [{"id": "c002", "tipo": "regra"}, {"id": "c003", "tipo": "regra"}, {"id": "c011", "tipo": "regra"}, {"id": "c013", "tipo": "regra"}, {"id": "c014", "tipo": "regra"}, {"id": "c016", "tipo": "regra"}, {"id": "c017", "tipo": "regra"}, {"id": "c019", "tipo": "regra"}, {"id": "c025", "tipo": "regra"}, {"id": "c030", "tipo": "regra"}], "aqIni": "2026-03-18", "aqFim": "2027-03-17", "limite": "2028-02-17", "recs": [{"ini": "2026-11-04", "fim": "2026-11-18", "status": "Programada"}]}, {"id": "c025", "nome": "Nayana Pressotto Spera", "curto": "Nayana Spera", "setor": "Qualificação", "grupo": "Backup: Ana Laura", "rel": [{"id": "c002", "tipo": "regra"}, {"id": "c003", "tipo": "regra"}, {"id": "c011", "tipo": "regra"}, {"id": "c013", "tipo": "regra"}, {"id": "c014", "tipo": "regra"}, {"id": "c016", "tipo": "regra"}, {"id": "c017", "tipo": "regra"}, {"id": "c019", "tipo": "regra"}, {"id": "c024", "tipo": "regra"}, {"id": "c030", "tipo": "regra"}], "aqIni": "2026-03-12", "aqFim": "2027-03-11", "limite": "2028-02-11", "recs": [{"ini": "2027-01-26", "fim": "2027-02-09", "status": "Programada"}, {"ini": "2026-11-16", "fim": "2026-11-30", "status": "Programada"}]}, {"id": "c030", "nome": "Viviane de Sena Marques Castelo Branco Naufal", "curto": "Viviane Naufal", "setor": "Qualificação", "grupo": "Backup: Ana Laura", "rel": [{"id": "c002", "tipo": "regra"}, {"id": "c003", "tipo": "regra"}, {"id": "c011", "tipo": "regra"}, {"id": "c013", "tipo": "regra"}, {"id": "c014", "tipo": "regra"}, {"id": "c016", "tipo": "regra"}, {"id": "c017", "tipo": "regra"}, {"id": "c019", "tipo": "regra"}, {"id": "c024", "tipo": "regra"}, {"id": "c025", "tipo": "regra"}], "aqIni": "2025-11-01", "aqFim": "2026-10-31", "limite": "2027-10-02", "recs": [{"ini": "2026-08-03", "fim": "2026-09-01", "status": "Concluída"}]}, {"id": "c021", "nome": "Leonardo Ambrozio Virgilio da Silva", "curto": "Leonardo Silva", "setor": "Notificação e Intimação", "grupo": "Backup: Vinicius Vezenfard", "rel": [{"id": "c029", "tipo": "regra"}], "aqIni": "2026-05-05", "aqFim": "2027-05-04", "limite": "2028-04-05", "recs": []}, {"id": "c029", "nome": "Vinicius Rossi Vezenfard", "curto": "Vinicius Vezenfard", "setor": "Notificação e Intimação", "grupo": "Backup: Leonardo Silva", "rel": [{"id": "c021", "tipo": "regra"}], "aqIni": "2026-04-03", "aqFim": "2027-04-02", "limite": "2028-03-04", "recs": [{"ini": "2026-10-05", "fim": "2026-11-03", "status": "Programada"}]}, {"id": "c004", "nome": "Ana Luiza Miranda Nizoli", "curto": "Ana Luiza Nizoli", "setor": "Atendimento", "grupo": "Grupo de backup 2 — Ana Luiza Nizoli", "rel": [{"id": "c001", "tipo": "regra"}, {"id": "c006", "tipo": "regra"}, {"id": "c007", "tipo": "regra"}, {"id": "c009", "tipo": "regra"}, {"id": "c010", "tipo": "regra"}, {"id": "c012", "tipo": "regra"}, {"id": "c015", "tipo": "regra"}, {"id": "c018", "tipo": "regra"}, {"id": "c022", "tipo": "regra"}, {"id": "c026", "tipo": "regra"}], "aqIni": "2026-02-04", "aqFim": "2027-02-03", "limite": "2028-01-05", "recs": [{"ini": "2026-09-01", "fim": "2026-09-30", "status": "Em gozo"}]}, {"id": "c005", "nome": "Aryane Santos da Silva", "curto": "Aryane", "setor": "Atendimento", "grupo": "Grupo de backup 1 — Ana Laura", "rel": [{"id": "c002", "tipo": "regra"}, {"id": "c009", "tipo": "regra"}, {"id": "c010", "tipo": "regra"}, {"id": "c012", "tipo": "regra"}, {"id": "c015", "tipo": "regra"}, {"id": "c020", "tipo": "regra"}], "aqIni": "2025-11-04", "aqFim": "2026-11-03", "limite": "2027-10-05", "recs": [{"ini": "2026-07-27", "fim": "2026-08-25", "status": "Concluída"}]}, {"id": "c010", "nome": "Cristiane Viana da Silva", "curto": "Cristiane", "setor": "Atendimento", "grupo": "Backup: Ana Luiza Nizoli", "rel": [{"id": "c004", "tipo": "regra"}, {"id": "c005", "tipo": "regra"}, {"id": "c009", "tipo": "regra"}, {"id": "c012", "tipo": "regra"}, {"id": "c015", "tipo": "regra"}, {"id": "c020", "tipo": "regra"}], "aqIni": "2026-04-03", "aqFim": "2027-04-02", "limite": "2028-03-04", "recs": [{"ini": "2026-12-15", "fim": "2027-01-13", "status": "Programada"}]}, {"id": "c012", "nome": "Flavia Cavelagna Galvao Medina", "curto": "Flávia", "setor": "Atendimento", "grupo": "Grupo de backup 2 — Ana Luiza Nizoli", "rel": [{"id": "c004", "tipo": "regra"}, {"id": "c005", "tipo": "regra"}, {"id": "c009", "tipo": "regra"}, {"id": "c010", "tipo": "regra"}, {"id": "c015", "tipo": "regra"}, {"id": "c020", "tipo": "regra"}], "aqIni": "2025-07-21", "aqFim": "2026-07-20", "limite": "2027-06-21", "recs": []}, {"id": "c015", "nome": "Grasiela Rodrigues Gomes", "curto": "Grasiela", "setor": "Atendimento", "grupo": "Grupo de backup 2 — Ana Luiza Nizoli", "rel": [{"id": "c004", "tipo": "regra"}, {"id": "c005", "tipo": "regra"}, {"id": "c009", "tipo": "regra"}, {"id": "c010", "tipo": "regra"}, {"id": "c012", "tipo": "regra"}, {"id": "c020", "tipo": "regra"}], "aqIni": "2026-03-01", "aqFim": "2027-02-28", "limite": "2028-01-30", "recs": []}, {"id": "c020", "nome": "Lara Fabian da Silva Correa", "curto": "Lara", "setor": "Atendimento", "grupo": "Grupo de backup 1 — Ana Laura", "rel": [{"id": "c002", "tipo": "regra"}, {"id": "c005", "tipo": "regra"}, {"id": "c009", "tipo": "regra"}, {"id": "c010", "tipo": "regra"}, {"id": "c012", "tipo": "regra"}, {"id": "c015", "tipo": "regra"}], "aqIni": "2025-11-18", "aqFim": "2026-11-17", "limite": "2027-10-19", "recs": []}, {"id": "c001", "nome": "Agnys Vitoria Thieme Alves", "curto": "Agnys", "setor": "Impressão", "grupo": "Backup: Ana Luiza Nizoli, Letícia", "rel": [{"id": "c004", "tipo": "regra"}, {"id": "c022", "tipo": "cad"}], "aqIni": "2026-05-15", "aqFim": "2027-05-14", "limite": "2028-04-15", "recs": [{"ini": "2026-10-05", "fim": "2026-10-19", "status": "Programada"}, {"ini": "2027-02-01", "fim": "2027-02-15", "status": "Programada"}]}, {"id": "c026", "nome": "Nayara Pressotto Spera", "curto": "Nayara", "setor": "Certidão", "grupo": "Backup: Ana Luiza Nizoli, Letícia", "rel": [{"id": "c004", "tipo": "regra"}, {"id": "c022", "tipo": "cad"}], "aqIni": "2026-05-02", "aqFim": "2027-05-01", "limite": "2028-04-02", "recs": [{"ini": "2026-12-15", "fim": "2027-01-13", "status": "Programada"}]}, {"id": "c006", "nome": "Beatriz Aparecida Torres de Lima", "curto": "Beatriz Aparecida", "setor": "Digitalização", "grupo": "Backup: Letícia, Ana Luiza Nizoli", "rel": [{"id": "c004", "tipo": "regra"}, {"id": "c022", "tipo": "cad"}], "aqIni": "2026-02-04", "aqFim": "2027-02-03", "limite": "2028-01-05", "recs": []}, {"id": "c007", "nome": "Beatriz Santos da Silva", "curto": "Beatriz Silva", "setor": "Analista Financeiro e de R.H.", "grupo": "Backup: Ana Luiza Nizoli", "rel": [{"id": "c004", "tipo": "regra"}], "aqIni": "2025-07-04", "aqFim": "2026-07-03", "limite": "2027-06-04", "recs": [{"ini": "2027-01-11", "fim": "2027-01-25", "status": "Programada"}]}, {"id": "c018", "nome": "Joao Vitor da Rocha Ribeiro", "curto": "João Vitor", "setor": "Assistente de Inovação e Tecnologia", "grupo": "Backup: Ana Luiza Nizoli, Letícia", "rel": [{"id": "c004", "tipo": "regra"}, {"id": "c022", "tipo": "cad"}], "aqIni": "2025-08-04", "aqFim": "2026-08-03", "limite": "2027-07-05", "recs": []}, {"id": "c022", "nome": "Leticia Santos Pinheiro da Silva", "curto": "Letícia", "setor": "Assistente de Processos e R.H.", "grupo": "Backup: Ana Luiza Nizoli, João Vitor", "rel": [{"id": "c001", "tipo": "cad"}, {"id": "c004", "tipo": "regra"}, {"id": "c006", "tipo": "cad"}, {"id": "c018", "tipo": "cad"}, {"id": "c026", "tipo": "cad"}], "aqIni": "2026-03-01", "aqFim": "2027-02-28", "limite": "2028-01-30", "recs": []}, {"id": "c023", "nome": "Luiza Rodrigues da Silva", "curto": "Luiza Silva", "setor": "Limpeza", "grupo": "Sem grupo definido", "rel": [], "aqIni": "2026-06-03", "aqFim": "2027-06-02", "limite": "2028-05-04", "recs": []}, {"id": "c027", "nome": "Raquel Miaissi Machado", "curto": "Raquel Machado", "setor": "RH", "grupo": "Sem grupo definido", "rel": [], "aqIni": "2025-07-04", "aqFim": "2026-07-03", "limite": "2027-06-04", "recs": []}];
-const ANO=2027;
+const ROSTER_BASE=[{"id": "c002", "nome": "Ana Laura Nicolosi da Rocha", "curto": "Ana Laura", "setor": "Qualificação", "grupo": "Grupo de backup 1 — Ana Laura", "rel": [{"id": "c003", "tipo": "regra"}, {"id": "c005", "tipo": "regra"}, {"id": "c011", "tipo": "regra"}, {"id": "c013", "tipo": "regra"}, {"id": "c014", "tipo": "regra"}, {"id": "c016", "tipo": "regra"}, {"id": "c017", "tipo": "regra"}, {"id": "c019", "tipo": "regra"}, {"id": "c020", "tipo": "regra"}, {"id": "c024", "tipo": "regra"}, {"id": "c025", "tipo": "regra"}, {"id": "c030", "tipo": "regra"}], "aqIni": "2025-09-06", "aqFim": "2026-09-05", "limite": "2027-08-07", "recs": [], "cod": "116", "ajuste": 0, "periodos": [{"ini": "2025-09-06", "fim": "2026-09-05", "limite": "2027-08-07", "dir": "30", "goz": "0"}, {"ini": "2026-09-06", "fim": "2027-09-05", "limite": "2028-08-07", "dir": "0", "goz": "0"}]}, {"id": "c003", "nome": "Ana Luiza dos Santos Silva", "curto": "Ana Luiza dos Santos Silva", "setor": "Qualificação", "grupo": "Backup: Viviane Naufal, Juliana Lilischkies", "rel": [{"id": "c002", "tipo": "regra"}, {"id": "c011", "tipo": "regra"}, {"id": "c013", "tipo": "regra"}, {"id": "c014", "tipo": "regra"}, {"id": "c016", "tipo": "regra"}, {"id": "c017", "tipo": "regra"}, {"id": "c019", "tipo": "regra"}, {"id": "c024", "tipo": "regra"}, {"id": "c025", "tipo": "regra"}, {"id": "c030", "tipo": "regra"}], "aqIni": "2026-06-03", "aqFim": "2027-06-02", "limite": "2028-05-04", "recs": [{"ini": "2026-08-10", "fim": "2026-08-24", "status": "Concluída", "dias": 15}, {"ini": "2026-12-15", "fim": "2026-12-29", "status": "Programada", "dias": 15}], "cod": "121", "ajuste": 0, "periodos": [{"ini": "2025-06-03", "fim": "2026-06-02", "limite": "2027-05-19", "dir": "30", "goz": "15"}, {"ini": "2026-06-03", "fim": "2027-06-02", "limite": "2028-05-04", "dir": "10", "goz": "0"}]}, {"id": "c009", "nome": "Carla Domingues de Oliveira Mascareli Padua", "curto": "Carla", "setor": "Qualificação", "grupo": "Grupo de backup 2 — Ana Luiza Nizoli", "rel": [{"id": "c004", "tipo": "regra"}, {"id": "c005", "tipo": "regra"}, {"id": "c010", "tipo": "regra"}, {"id": "c012", "tipo": "regra"}, {"id": "c015", "tipo": "regra"}, {"id": "c020", "tipo": "regra"}], "aqIni": "2026-03-21", "aqFim": "2027-03-20", "limite": "2028-02-20", "recs": [{"ini": "2027-01-20", "fim": "2027-01-29", "status": "Programada", "dias": 10}], "cod": "102", "ajuste": 0, "periodos": [{"ini": "2025-03-21", "fim": "2026-03-20", "limite": "2027-03-11", "dir": "30", "goz": "20"}, {"ini": "2026-03-21", "fim": "2027-03-20", "limite": "2028-02-20", "dir": "15", "goz": "0"}]}, {"id": "c011", "nome": "Felipe de Oliveira Melo", "curto": "Felipe Melo", "setor": "Qualificação", "grupo": "Backup: Ana Laura", "rel": [{"id": "c002", "tipo": "regra"}, {"id": "c003", "tipo": "regra"}, {"id": "c013", "tipo": "regra"}, {"id": "c014", "tipo": "regra"}, {"id": "c016", "tipo": "regra"}, {"id": "c017", "tipo": "regra"}, {"id": "c019", "tipo": "regra"}, {"id": "c024", "tipo": "regra"}, {"id": "c025", "tipo": "regra"}, {"id": "c030", "tipo": "regra"}], "aqIni": "2026-06-03", "aqFim": "2027-06-02", "limite": "2028-05-04", "recs": [], "cod": "133", "ajuste": 0, "periodos": [{"ini": "2026-06-03", "fim": "2027-06-02", "limite": "2028-05-04", "dir": "10", "goz": "0"}]}, {"id": "c013", "nome": "Gabriela Ferreira Belisario", "curto": "Gabriela Belisario", "setor": "Qualificação", "grupo": "Backup: Ana Laura", "rel": [{"id": "c002", "tipo": "regra"}, {"id": "c003", "tipo": "regra"}, {"id": "c011", "tipo": "regra"}, {"id": "c014", "tipo": "regra"}, {"id": "c016", "tipo": "regra"}, {"id": "c017", "tipo": "regra"}, {"id": "c019", "tipo": "regra"}, {"id": "c024", "tipo": "regra"}, {"id": "c025", "tipo": "regra"}, {"id": "c030", "tipo": "regra"}], "aqIni": "2026-09-02", "aqFim": "2027-09-01", "limite": "2028-08-03", "recs": [{"ini": "2026-09-01", "fim": "2026-09-30", "status": "Em gozo", "dias": 30}], "cod": "78", "ajuste": 0, "periodos": [{"ini": "2026-09-02", "fim": "2027-09-01", "limite": "2028-08-03", "dir": "2,5", "goz": "0"}]}, {"id": "c014", "nome": "Giovana Barbosa da Cunha", "curto": "Giovana Cunha", "setor": "Qualificação", "grupo": "Backup: Ana Laura", "rel": [{"id": "c002", "tipo": "regra"}, {"id": "c003", "tipo": "regra"}, {"id": "c011", "tipo": "regra"}, {"id": "c013", "tipo": "regra"}, {"id": "c016", "tipo": "regra"}, {"id": "c017", "tipo": "regra"}, {"id": "c019", "tipo": "regra"}, {"id": "c024", "tipo": "regra"}, {"id": "c025", "tipo": "regra"}, {"id": "c030", "tipo": "regra"}], "aqIni": "2026-02-01", "aqFim": "2027-01-31", "limite": "2028-01-02", "recs": [{"ini": "2026-10-13", "fim": "2026-10-17", "status": "Em gozo", "dias": 5}], "cod": "117", "ajuste": 0, "periodos": [{"ini": "2026-02-01", "fim": "2027-01-31", "limite": "2028-01-02", "dir": "20", "goz": "0"}]}, {"id": "c016", "nome": "Helen Fernandes Lourenço Mantovani", "curto": "Helen Mantovani", "setor": "Qualificação", "grupo": "Backup: Ana Laura", "rel": [{"id": "c002", "tipo": "regra"}, {"id": "c003", "tipo": "regra"}, {"id": "c011", "tipo": "regra"}, {"id": "c013", "tipo": "regra"}, {"id": "c014", "tipo": "regra"}, {"id": "c017", "tipo": "regra"}, {"id": "c019", "tipo": "regra"}, {"id": "c024", "tipo": "regra"}, {"id": "c025", "tipo": "regra"}, {"id": "c030", "tipo": "regra"}], "aqIni": "2025-05-02", "aqFim": "2026-05-01", "limite": "2027-04-02", "recs": [{"ini": "2026-10-05", "fim": "2026-10-24", "status": "Programada", "dias": 20}], "cod": "120", "ajuste": 0, "periodos": [{"ini": "2025-05-02", "fim": "2026-05-01", "limite": "2027-04-02", "dir": "30", "goz": "0"}, {"ini": "2026-05-02", "fim": "2027-05-01", "limite": "2028-04-02", "dir": "12,5", "goz": "0"}]}, {"id": "c017", "nome": "Isabela Eloiza de Lima Alves", "curto": "Isabela Alves", "setor": "Qualificação", "grupo": "Backup: Ana Laura", "rel": [{"id": "c002", "tipo": "regra"}, {"id": "c003", "tipo": "regra"}, {"id": "c011", "tipo": "regra"}, {"id": "c013", "tipo": "regra"}, {"id": "c014", "tipo": "regra"}, {"id": "c016", "tipo": "regra"}, {"id": "c019", "tipo": "regra"}, {"id": "c024", "tipo": "regra"}, {"id": "c025", "tipo": "regra"}, {"id": "c030", "tipo": "regra"}], "aqIni": "2025-12-02", "aqFim": "2026-12-01", "limite": "2027-11-02", "recs": [], "cod": "126", "ajuste": 0, "periodos": [{"ini": "2025-12-02", "fim": "2026-12-01", "limite": "2027-11-02", "dir": "25", "goz": "0"}]}, {"id": "c019", "nome": "Juliana Meneghetti Rodrigues Lilischkies", "curto": "Juliana Lilischkies", "setor": "Qualificação", "grupo": "Backup: Ana Laura", "rel": [{"id": "c002", "tipo": "regra"}, {"id": "c003", "tipo": "regra"}, {"id": "c011", "tipo": "regra"}, {"id": "c013", "tipo": "regra"}, {"id": "c014", "tipo": "regra"}, {"id": "c016", "tipo": "regra"}, {"id": "c017", "tipo": "regra"}, {"id": "c024", "tipo": "regra"}, {"id": "c025", "tipo": "regra"}, {"id": "c030", "tipo": "regra"}], "aqIni": "2026-01-05", "aqFim": "2027-01-04", "limite": "2027-12-06", "recs": [], "cod": "139", "ajuste": 0, "periodos": [{"ini": "2026-01-05", "fim": "2027-01-04", "limite": "2027-12-06", "dir": "20", "goz": "0"}]}, {"id": "c024", "nome": "Maria Eduarda Sabino", "curto": "Maria Sabino", "setor": "Qualificação", "grupo": "Backup: Ana Laura", "rel": [{"id": "c002", "tipo": "regra"}, {"id": "c003", "tipo": "regra"}, {"id": "c011", "tipo": "regra"}, {"id": "c013", "tipo": "regra"}, {"id": "c014", "tipo": "regra"}, {"id": "c016", "tipo": "regra"}, {"id": "c017", "tipo": "regra"}, {"id": "c019", "tipo": "regra"}, {"id": "c025", "tipo": "regra"}, {"id": "c030", "tipo": "regra"}], "aqIni": "2026-03-18", "aqFim": "2027-03-17", "limite": "2028-02-17", "recs": [{"ini": "2026-11-04", "fim": "2026-11-18", "status": "Programada", "dias": 15}], "cod": "119", "ajuste": 15, "periodos": [{"ini": "2025-03-18", "fim": "2026-03-17", "limite": "2027-02-16", "dir": "30", "goz": "0"}, {"ini": "2026-03-18", "fim": "2027-03-17", "limite": "2028-02-17", "dir": "15", "goz": "0"}]}, {"id": "c025", "nome": "Nayana Pressotto Spera", "curto": "Nayana Spera", "setor": "Qualificação", "grupo": "Backup: Ana Laura", "rel": [{"id": "c002", "tipo": "regra"}, {"id": "c003", "tipo": "regra"}, {"id": "c011", "tipo": "regra"}, {"id": "c013", "tipo": "regra"}, {"id": "c014", "tipo": "regra"}, {"id": "c016", "tipo": "regra"}, {"id": "c017", "tipo": "regra"}, {"id": "c019", "tipo": "regra"}, {"id": "c024", "tipo": "regra"}, {"id": "c030", "tipo": "regra"}], "aqIni": "2026-03-12", "aqFim": "2027-03-11", "limite": "2028-02-11", "recs": [{"ini": "2027-01-26", "fim": "2027-02-09", "status": "Programada", "dias": 15}, {"ini": "2026-11-16", "fim": "2026-11-30", "status": "Programada", "dias": 15}], "cod": "14", "ajuste": 0, "periodos": [{"ini": "2025-03-12", "fim": "2026-03-11", "limite": "2027-02-10", "dir": "30", "goz": "0"}, {"ini": "2026-03-12", "fim": "2027-03-11", "limite": "2028-02-11", "dir": "15", "goz": "0"}]}, {"id": "c030", "nome": "Viviane de Sena Marques Castelo Branco Naufal", "curto": "Viviane Naufal", "setor": "Qualificação", "grupo": "Backup: Ana Laura", "rel": [{"id": "c002", "tipo": "regra"}, {"id": "c003", "tipo": "regra"}, {"id": "c011", "tipo": "regra"}, {"id": "c013", "tipo": "regra"}, {"id": "c014", "tipo": "regra"}, {"id": "c016", "tipo": "regra"}, {"id": "c017", "tipo": "regra"}, {"id": "c019", "tipo": "regra"}, {"id": "c024", "tipo": "regra"}, {"id": "c025", "tipo": "regra"}], "aqIni": "2025-11-01", "aqFim": "2026-10-31", "limite": "2027-10-02", "recs": [{"ini": "2026-08-03", "fim": "2026-09-01", "status": "Concluída", "dias": 30}], "cod": "4", "ajuste": 0, "periodos": [{"ini": "2025-11-01", "fim": "2026-10-31", "limite": "2027-10-02", "dir": "27,5", "goz": "0"}]}, {"id": "c021", "nome": "Leonardo Ambrozio Virgilio da Silva", "curto": "Leonardo Silva", "setor": "Notificação e Intimação", "grupo": "Backup: Vinicius Vezenfard", "rel": [{"id": "c029", "tipo": "regra"}], "aqIni": "2026-05-05", "aqFim": "2027-05-04", "limite": "2028-04-05", "recs": [], "cod": "132", "ajuste": 0, "periodos": [{"ini": "2026-05-05", "fim": "2027-05-04", "limite": "2028-04-05", "dir": "10", "goz": "0"}]}, {"id": "c029", "nome": "Vinicius Rossi Vezenfard", "curto": "Vinicius Vezenfard", "setor": "Notificação e Intimação", "grupo": "Backup: Leonardo Silva", "rel": [{"id": "c021", "tipo": "regra"}], "aqIni": "2026-04-03", "aqFim": "2027-04-02", "limite": "2028-03-04", "recs": [{"ini": "2026-10-05", "fim": "2026-11-03", "status": "Programada", "dias": 30}], "cod": "110", "ajuste": 0, "periodos": [{"ini": "2025-04-03", "fim": "2026-04-02", "limite": "2027-03-04", "dir": "30", "goz": "0"}, {"ini": "2026-04-03", "fim": "2027-04-02", "limite": "2028-03-04", "dir": "15", "goz": "0"}]}, {"id": "c004", "nome": "Ana Luiza Miranda Nizoli", "curto": "Ana Luiza Nizoli", "setor": "Atendimento", "grupo": "Grupo de backup 2 — Ana Luiza Nizoli", "rel": [{"id": "c001", "tipo": "regra"}, {"id": "c006", "tipo": "regra"}, {"id": "c007", "tipo": "regra"}, {"id": "c009", "tipo": "regra"}, {"id": "c010", "tipo": "regra"}, {"id": "c012", "tipo": "regra"}, {"id": "c015", "tipo": "regra"}, {"id": "c018", "tipo": "regra"}, {"id": "c022", "tipo": "regra"}, {"id": "c026", "tipo": "regra"}], "aqIni": "2026-02-04", "aqFim": "2027-02-03", "limite": "2028-01-05", "recs": [{"ini": "2026-09-01", "fim": "2026-09-30", "status": "Em gozo", "dias": 30}], "cod": "100", "ajuste": 0, "periodos": [{"ini": "2026-02-04", "fim": "2027-02-03", "limite": "2028-01-05", "dir": "20", "goz": "0"}]}, {"id": "c005", "nome": "Aryane Santos da Silva", "curto": "Aryane", "setor": "Atendimento", "grupo": "Grupo de backup 1 — Ana Laura", "rel": [{"id": "c002", "tipo": "regra"}, {"id": "c009", "tipo": "regra"}, {"id": "c010", "tipo": "regra"}, {"id": "c012", "tipo": "regra"}, {"id": "c015", "tipo": "regra"}, {"id": "c020", "tipo": "regra"}], "aqIni": "2025-11-04", "aqFim": "2026-11-03", "limite": "2027-10-05", "recs": [{"ini": "2026-07-27", "fim": "2026-08-25", "status": "Concluída", "dias": 30}], "cod": "125", "ajuste": 0, "periodos": [{"ini": "2025-11-04", "fim": "2026-11-03", "limite": "2027-10-05", "dir": "27,5", "goz": "0"}]}, {"id": "c010", "nome": "Cristiane Viana da Silva", "curto": "Cristiane", "setor": "Atendimento", "grupo": "Backup: Ana Luiza Nizoli", "rel": [{"id": "c004", "tipo": "regra"}, {"id": "c005", "tipo": "regra"}, {"id": "c009", "tipo": "regra"}, {"id": "c012", "tipo": "regra"}, {"id": "c015", "tipo": "regra"}, {"id": "c020", "tipo": "regra"}], "aqIni": "2026-04-03", "aqFim": "2027-04-02", "limite": "2028-03-04", "recs": [{"ini": "2026-12-15", "fim": "2027-01-13", "status": "Programada", "dias": 30}], "cod": "109", "ajuste": 0, "periodos": [{"ini": "2025-04-03", "fim": "2026-04-02", "limite": "2027-03-04", "dir": "30", "goz": "0"}, {"ini": "2026-04-03", "fim": "2027-04-02", "limite": "2028-03-04", "dir": "15", "goz": "0"}]}, {"id": "c012", "nome": "Flavia Cavelagna Galvao Medina", "curto": "Flávia", "setor": "Atendimento", "grupo": "Grupo de backup 2 — Ana Luiza Nizoli", "rel": [{"id": "c004", "tipo": "regra"}, {"id": "c005", "tipo": "regra"}, {"id": "c009", "tipo": "regra"}, {"id": "c010", "tipo": "regra"}, {"id": "c015", "tipo": "regra"}, {"id": "c020", "tipo": "regra"}], "aqIni": "2025-07-21", "aqFim": "2026-07-20", "limite": "2027-06-21", "recs": [], "cod": "134", "ajuste": 0, "periodos": [{"ini": "2025-07-21", "fim": "2026-07-20", "limite": "2027-06-21", "dir": "30", "goz": "0"}, {"ini": "2026-07-21", "fim": "2027-07-20", "limite": "2028-06-21", "dir": "5", "goz": "0"}]}, {"id": "c015", "nome": "Grasiela Rodrigues Gomes", "curto": "Grasiela", "setor": "Atendimento", "grupo": "Grupo de backup 2 — Ana Luiza Nizoli", "rel": [{"id": "c004", "tipo": "regra"}, {"id": "c005", "tipo": "regra"}, {"id": "c009", "tipo": "regra"}, {"id": "c010", "tipo": "regra"}, {"id": "c012", "tipo": "regra"}, {"id": "c020", "tipo": "regra"}], "aqIni": "2026-03-01", "aqFim": "2027-02-28", "limite": "2028-01-30", "recs": [], "cod": "65", "ajuste": 0, "periodos": [{"ini": "2026-03-01", "fim": "2027-02-28", "limite": "2028-01-30", "dir": "17,5", "goz": "0"}]}, {"id": "c020", "nome": "Lara Fabian da Silva Correa", "curto": "Lara", "setor": "Atendimento", "grupo": "Grupo de backup 1 — Ana Laura", "rel": [{"id": "c002", "tipo": "regra"}, {"id": "c005", "tipo": "regra"}, {"id": "c009", "tipo": "regra"}, {"id": "c010", "tipo": "regra"}, {"id": "c012", "tipo": "regra"}, {"id": "c015", "tipo": "regra"}], "aqIni": "2025-11-18", "aqFim": "2026-11-17", "limite": "2027-10-19", "recs": [], "cod": "138", "ajuste": 0, "periodos": [{"ini": "2025-11-18", "fim": "2026-11-17", "limite": "2027-10-19", "dir": "25", "goz": "0"}]}, {"id": "c001", "nome": "Agnys Vitoria Thieme Alves", "curto": "Agnys", "setor": "Impressão", "grupo": "Backup: Ana Luiza Nizoli, Letícia", "rel": [{"id": "c004", "tipo": "regra"}, {"id": "c022", "tipo": "cad"}], "aqIni": "2026-05-15", "aqFim": "2027-05-14", "limite": "2028-04-15", "recs": [{"ini": "2026-10-05", "fim": "2026-10-19", "status": "Programada", "dias": 15}, {"ini": "2027-02-01", "fim": "2027-02-15", "status": "Programada", "dias": 15}], "cod": "112", "ajuste": 0, "periodos": [{"ini": "2025-05-15", "fim": "2026-05-14", "limite": "2027-04-15", "dir": "30", "goz": "0"}, {"ini": "2026-05-15", "fim": "2027-05-14", "limite": "2028-04-15", "dir": "10", "goz": "0"}]}, {"id": "c026", "nome": "Nayara Pressotto Spera", "curto": "Nayara", "setor": "Certidão", "grupo": "Backup: Ana Luiza Nizoli, Letícia", "rel": [{"id": "c004", "tipo": "regra"}, {"id": "c022", "tipo": "cad"}], "aqIni": "2026-05-02", "aqFim": "2027-05-01", "limite": "2028-04-02", "recs": [{"ini": "2026-12-15", "fim": "2027-01-13", "status": "Programada", "dias": 30}], "cod": "66", "ajuste": 0, "periodos": [{"ini": "2025-05-02", "fim": "2026-05-01", "limite": "2027-04-02", "dir": "30", "goz": "0"}, {"ini": "2026-05-02", "fim": "2027-05-01", "limite": "2028-04-02", "dir": "12,5", "goz": "0"}]}, {"id": "c006", "nome": "Beatriz Aparecida Torres de Lima", "curto": "Beatriz Aparecida", "setor": "Digitalização", "grupo": "Backup: Letícia, Ana Luiza Nizoli", "rel": [{"id": "c004", "tipo": "regra"}, {"id": "c022", "tipo": "cad"}], "aqIni": "2026-02-04", "aqFim": "2027-02-03", "limite": "2028-01-05", "recs": [], "cod": "140", "ajuste": 0, "periodos": [{"ini": "2026-02-04", "fim": "2027-02-03", "limite": "2028-01-05", "dir": "20", "goz": "0"}]}, {"id": "c007", "nome": "Beatriz Santos da Silva", "curto": "Beatriz Silva", "setor": "Analista Financeiro e de R.H.", "grupo": "Backup: Ana Luiza Nizoli", "rel": [{"id": "c004", "tipo": "regra"}], "aqIni": "2025-07-04", "aqFim": "2026-07-03", "limite": "2027-06-04", "recs": [{"ini": "2027-01-11", "fim": "2027-01-25", "status": "Programada", "dias": 15}], "cod": "53", "ajuste": 0, "periodos": [{"ini": "2025-07-04", "fim": "2026-07-03", "limite": "2027-06-04", "dir": "30", "goz": "0"}, {"ini": "2026-07-04", "fim": "2027-07-03", "limite": "2028-06-04", "dir": "7,5", "goz": "0"}]}, {"id": "c018", "nome": "Joao Vitor da Rocha Ribeiro", "curto": "João Vitor", "setor": "Assistente de Inovação e Tecnologia", "grupo": "Backup: Ana Luiza Nizoli, Letícia", "rel": [{"id": "c004", "tipo": "regra"}, {"id": "c022", "tipo": "cad"}], "aqIni": "2025-08-04", "aqFim": "2026-08-03", "limite": "2027-07-05", "recs": [], "cod": "136", "ajuste": 0, "periodos": [{"ini": "2025-08-04", "fim": "2026-08-03", "limite": "2027-07-05", "dir": "30", "goz": "0"}, {"ini": "2026-08-04", "fim": "2027-08-03", "limite": "2028-07-05", "dir": "5", "goz": "0"}]}, {"id": "c022", "nome": "Leticia Santos Pinheiro da Silva", "curto": "Letícia", "setor": "Assistente de Processos e R.H.", "grupo": "Backup: Ana Luiza Nizoli, João Vitor", "rel": [{"id": "c001", "tipo": "cad"}, {"id": "c004", "tipo": "regra"}, {"id": "c006", "tipo": "cad"}, {"id": "c018", "tipo": "cad"}, {"id": "c026", "tipo": "cad"}], "aqIni": "2026-03-01", "aqFim": "2027-02-28", "limite": "2028-01-30", "recs": [], "cod": "64", "ajuste": 0, "periodos": [{"ini": "2026-03-01", "fim": "2027-02-28", "limite": "2028-01-30", "dir": "17,5", "goz": "0"}]}, {"id": "c023", "nome": "Luiza Rodrigues da Silva", "curto": "Luiza Silva", "setor": "Limpeza", "grupo": "Sem grupo definido", "rel": [], "aqIni": "2026-06-03", "aqFim": "2027-06-02", "limite": "2028-05-04", "recs": [], "cod": "24", "ajuste": 0, "periodos": [{"ini": "2026-06-03", "fim": "2027-06-02", "limite": "2028-05-04", "dir": "10", "goz": "0"}]}, {"id": "c027", "nome": "Raquel Miaissi Machado", "curto": "Raquel Machado", "setor": "RH", "grupo": "Sem grupo definido", "rel": [], "aqIni": "2025-07-04", "aqFim": "2026-07-03", "limite": "2027-06-04", "recs": [], "cod": "106", "ajuste": 0, "periodos": [{"ini": "2025-07-04", "fim": "2026-07-03", "limite": "2027-06-04", "dir": "30", "goz": "0"}, {"ini": "2026-07-04", "fim": "2027-07-03", "limite": "2028-06-04", "dir": "7,5", "goz": "0"}]}];
+const BASEBYID=Object.fromEntries(ROSTER_BASE.map(r=>[r.id,r]));
+let ANO=2027, DATABASE='2026-10-14', COLABS={};
+const ROSTER=[], byId={}, PROG={}, BASE_REL={};
 const MESES=['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
 const MABR=['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
 const mk=n=>ANO+'-'+String(n).padStart(2,'0'); // 1..12
@@ -106,23 +108,18 @@ const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&
 /* quem enxerga Quadro, Calendário e Atividade (os demais só veem 'Minhas indicações') */
 const VE_TUDO=new Set(['c007','c025','c030']);
 const SO_BACKUP={c004:'Backup'};
-ROSTER.forEach(r=>{r.secao=SO_BACKUP[r.id]||r.setor});
-{const ord=[...new Set(ROSTER.map(r=>r.secao))].filter(s=>s!=='Backup').concat(['Backup']);
- ROSTER.sort((a,b)=>ord.indexOf(a.secao)-ord.indexOf(b.secao));}
-const byId=Object.fromEntries(ROSTER.map(r=>[r.id,r]));
 /* regras de cobertura: base (cadastro) + ajustes feitos pelo RH em tempo real */
-const BASE_REL=Object.fromEntries(ROSTER.map(r=>[r.id,r.rel.map(x=>({...x}))]));
 let REGRAS={};
 const pk=(a,b)=>a<b?a+'|'+b:b+'|'+a;
 function applyRegras(){
   const ord=Object.fromEntries(ROSTER.map((r,i)=>[r.id,i]));
   ROSTER.forEach(r=>{
-    const rel=BASE_REL[r.id].filter(x=>REGRAS[pk(r.id,x.id)]!==false);
+    const rel=(BASE_REL[r.id]||[]).filter(x=>byId[x.id]&&REGRAS[pk(r.id,x.id)]!==false);
     Object.keys(REGRAS).forEach(k=>{if(REGRAS[k]!==true)return;const [a,b]=k.split('|');const o=a===r.id?b:(b===r.id?a:null);
       if(o&&byId[o]&&!rel.some(x=>x.id===o))rel.push({id:o,tipo:'nova'})});
     rel.sort((x,y)=>ord[x.id]-ord[y.id]);r.rel=rel});
 }
-const inBase=(a,b)=>BASE_REL[a].some(x=>x.id===b);
+const inBase=(a,b)=>(BASE_REL[a]||[]).some(x=>x.id===b);
 const CURTO={c002:'Ana Laura',c003:'Ana Luiza Silva',c004:'Ana Luiza Nizoli'};
 const curto=n=>{const r=ROSTER.find(x=>x.nome===n);if(r&&CURTO[r.id])return CURTO[r.id];const p=n.split(' ');return p.length>1?p[0]+' '+p[p.length-1]:n};
 const when=iso=>{try{return new Date(iso).toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit',timeZone:'America/Sao_Paulo'})}catch(e){return ''}};
@@ -132,7 +129,64 @@ function ls(k,v){try{if(v===undefined)return localStorage.getItem(k);if(v===null
 
 /* meses ocupados por férias já programadas/em gozo (estático, vindo do cadastro) */
 function mesesProg(r){const s=new Set();r.recs.forEach(x=>{let d=new Date(x.ini+'T12:00:00'),e=new Date(x.fim+'T12:00:00');for(;d<=e;d.setDate(d.getDate()+1)){const k=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0');if(k.startsWith(ANO))s.add(k)}});return s}
-const PROG=Object.fromEntries(ROSTER.map(r=>[r.id,mesesProg(r)]));
+/* monta a lista efetiva: cadastro embutido + ajustes salvos pelo RH (incluir/editar/excluir colaboradores) */
+function rebuildRoster(){
+  const lista=[];
+  const norm=(b,o)=>{const r={rel:[],recs:[],periodos:[],grupo:'',cod:'',...b,...(o||{})};delete r.atualizadoPor;delete r.atualizadoEm;return r};
+  ROSTER_BASE.forEach(b=>{const o=COLABS[b.id];const r=norm(b,o);r.rel=b.rel;if(r.ativo!==false)lista.push(r)});
+  Object.values(COLABS).forEach(o=>{if(BASEBYID[o.id])return;const r=norm({},o);if(r.ativo!==false)lista.push(r)});
+  lista.forEach(r=>{r.secao=SO_BACKUP[r.id]||r.setor});
+  const ord=[...new Set(lista.map(r=>r.secao))].filter(x=>x!=='Backup').concat(['Backup']);
+  lista.sort((a,b)=>ord.indexOf(a.secao)-ord.indexOf(b.secao));
+  ROSTER.length=0;lista.forEach(r=>ROSTER.push(r));
+  Object.keys(byId).forEach(k=>delete byId[k]);ROSTER.forEach(r=>byId[r.id]=r);
+  Object.keys(PROG).forEach(k=>delete PROG[k]);ROSTER.forEach(r=>PROG[r.id]=mesesProg(r));
+  Object.keys(BASE_REL).forEach(k=>delete BASE_REL[k]);
+  ROSTER.forEach(r=>{BASE_REL[r.id]=((BASEBYID[r.id]||{}).rel||[]).filter(x=>byId[x.id]).map(x=>({...x}))});
+  applyRegras();
+}
+rebuildRoster();
+const setoresLista=()=>[...new Set(ROSTER.map(r=>r.setor))];
+const dnum=v=>parseFloat(String(v||'0').replace(/\./g,'').replace(',','.'))||0;
+const diasEntre=(a,b)=>Math.round((new Date(b+'T12:00:00')-new Date(a+'T12:00:00'))/864e5)+1;
+/* período em curso e limite: pula períodos já cobertos por férias programadas (primeiro que ainda precisa programar) */
+function calcPeriodo(periodos,recs,base,ajuste){
+  let rest=(+ajuste||0)+(recs||[]).filter(x=>x.fim>=base&&(!x.status||['Programada','Em gozo'].includes(x.status))).reduce((t,x)=>t+(+x.dias||diasEntre(x.ini,x.fim)),0);
+  let alvo=null;
+  for(const x of periodos||[]){let falta=30-dnum(x.goz);
+    if(x.fim<base){const usa=Math.min(rest,falta);rest-=usa;falta-=usa;if(falta<=0)continue}
+    if(!alvo)alvo=x}
+  return alvo||((periodos||[])[(periodos||[]).length-1])||null;
+}
+/* ===== leitura do relatório "Programação de Férias" da folha ===== */
+function linesFromItems(items){
+  const rows=[];
+  items.forEach(it=>{if(!it.str||!it.str.trim())return;const y=it.transform[5],x=it.transform[4];
+    let r=rows.find(q=>Math.abs(q.y-y)<=3);if(!r){r={y,its:[]};rows.push(r)}r.its.push({x,s:it.str})});
+  rows.sort((a,b)=>b.y-a.y);
+  return rows.map(r=>r.its.sort((a,b)=>a.x-b.x).map(i=>i.s.trim()).join(' ').replace(/\s+/g,' ').trim());
+}
+function parseFolha(lines){
+  const D='(\\d{2}/\\d{2}/\\d{4})',N='([\\d.,]+)';
+  const PER=new RegExp(D+'\\s+'+D+'\\s+\\.{4}/\\.{4}/\\.{6}\\s+\\.{4}\\s+\\.{4}\\s+\\.{4}\\s+'+N+'\\s+'+N+'\\s+'+N+'\\s+'+D);
+  const EMP=/^(\d{1,5})\s+(\D+?)\s*\d{2}\/\d{2}\/\d{4}\s+\d{2}\/\d{2}\/\d{4}\s+\d\s+\d{2}\/\d{2}\b/;
+  const NAMEONLY=/^(\d{1,5})\s+([A-ZÀ-Ý][A-ZÀ-Ý .'\-]+?)$/;
+  const DATAROW=/^\d{2}\/\d{2}\/\d{4}\s+\d{2}\/\d{2}\/\d{4}\s+\d\s+\d{2}\/\d{2}\b/;
+  const iso=s=>s.split('/').reverse().join('-');
+  const colabs=[];let cur=null,pend=null,emissao=null;
+  const addPer=l=>{const m=l.match(PER);if(!m||!cur)return;cur.periodos.push({ini:iso(m[1]),fim:iso(m[2]),dir:m[3],goz:m[4],rest:m[5],limite:iso(m[6])})};
+  for(const l of lines){
+    const em=l.match(/Emiss[ãa]o:\s*(\d{2})\/(\d{2})\/(\d{4})/);if(em)emissao=em[3]+'-'+em[2]+'-'+em[1];
+    const e=l.match(EMP);
+    if(e){cur={cod:e[1],nome:e[2].trim(),periodos:[]};colabs.push(cur);pend=null;addPer(l);continue}
+    const n=l.match(NAMEONLY);
+    if(n&&!/P[áa]gina|Emiss|Horas|Data base|CAEPF/i.test(l)){pend={cod:n[1],nome:n[2].trim()};continue}
+    if(pend&&DATAROW.test(l)){cur={cod:pend.cod,nome:pend.nome,periodos:[]};colabs.push(cur);pend=null;addPer(l);continue}
+    if(/^\d{2}\/\d{2}\/\d{4}\s+\d{2}\/\d{2}\/\d{4}\s+\.{4}\//.test(l)){addPer(l)}
+  }
+  return {emissao,colabs:colabs.filter(c=>c.periodos.length)};
+}
+
 
 /* ====== camada de dados: Firebase (padrão) ou memória (?demo) ====== */
 const DEMO=new URLSearchParams(location.search).has('demo');
@@ -143,7 +197,11 @@ async function initDB(){
   if(DEMO){
     const subs=[];let store={};
     DB={modo:'demo',
-      listenPref(cb){subs.push(cb);cb({...store});$('#dot').className='dot on';$('#liveTxt').textContent='Modo demonstração (não grava)';},
+      listenPref(ano,cb){subs.length=0;subs.push(cb);cb({...store});$('#dot').className='dot on';$('#liveTxt').textContent='Modo demonstração (não grava)';return()=>{}},
+      listenColabs(cb){cb({...COLABS})},listenCiclo(cb){cb({})},
+      async setColab(d){COLABS[d.id]=d;rebuildRoster();render2()},
+      async setColabs(ds){ds.forEach(d=>COLABS[d.id]=d);rebuildRoster();render2()},
+      async setCiclo(c){ANO=c.ano;DATABASE=c.dataBase;store={};rebuildRoster();subs.forEach(f=>f({}));render2()},
       listenLog(cb){cb([])},
       listenRegras(cb){cb({...REGRAS})},
       async setPar(key,val){if(val===undefined)delete REGRAS[key];else REGRAS[key]=val;applyRegras();render2()},
@@ -160,7 +218,12 @@ async function initDB(){
   const [{initializeApp},F]=await Promise.all([import(`https://www.gstatic.com/firebasejs/${V}/firebase-app.js`),import(`https://www.gstatic.com/firebasejs/${V}/firebase-firestore.js`)]);
   const app=initializeApp(cfg,'ferias');const db=F.getFirestore(app);
   DB={modo:'fb',
-    listenPref(cb,err){return F.onSnapshot(F.collection(db,'ferias_pref'),s=>{const o={};s.forEach(d=>o[d.id]=d.data());cb(o)},err)},
+    listenPref(ano,cb,err){return F.onSnapshot(F.query(F.collection(db,'ferias_pref'),F.where('ano','==',ano)),s=>{const o={};s.forEach(d=>{const x=d.data();o[x.colabId]=x});cb(o)},err)},
+    listenColabs(cb,err){return F.onSnapshot(F.collection(db,'ferias_colab'),s=>{const o={};s.forEach(d=>o[d.id]=d.data());cb(o)},err)},
+    listenCiclo(cb,err){return F.onSnapshot(F.doc(db,'ferias_config','ciclo'),s=>{cb(s.exists()?s.data():{})},err)},
+    async setColab(d){await F.setDoc(F.doc(db,'ferias_colab',d.id),d)},
+    async setColabs(ds){for(let i=0;i<ds.length;i+=400){const b=F.writeBatch(db);ds.slice(i,i+400).forEach(d=>b.set(F.doc(db,'ferias_colab',d.id),d));await b.commit()}},
+    async setCiclo(c){await F.setDoc(F.doc(db,'ferias_config','ciclo'),c,{merge:true})},
     listenLog(cb){return F.onSnapshot(F.query(F.collection(db,'ferias_log'),F.orderBy('quando','desc'),F.limit(80)),s=>{cb(s.docs.map(d=>d.data()))},()=>{})},
     listenRegras(cb,err){return F.onSnapshot(F.doc(db,'ferias_config','regras'),s=>{cb(s.exists()?(s.data().pares||{}):{})},err)},
     async setPar(key,val,por){
@@ -168,9 +231,9 @@ async function initDB(){
     },
     async salvar(cid,novo,por,rhmode){
       await F.runTransaction(db,async tx=>{
-        const ref=F.doc(db,'ferias_pref',cid);await tx.get(ref);
+        const ref=F.doc(db,'ferias_pref',ANO+'_'+cid);await tx.get(ref);
         const outros={};
-        for(const rel of byId[cid].rel){const s=await tx.get(F.doc(db,'ferias_pref',rel.id));if(s.exists())outros[rel.id]=s.data()}
+        for(const rel of byId[cid].rel){const s=await tx.get(F.doc(db,'ferias_pref',ANO+'_'+rel.id));if(s.exists())outros[rel.id]=s.data()}
         const confl=conflitoDe(cid,novo.opcoes,outros);
         if(confl&&!rhmode)throw new Error(confl);
         tx.set(ref,novo);
@@ -203,14 +266,16 @@ function conflitosVivos(){
 function render(){
   $('#whoTxt').innerHTML=me?`Você: <b>${esc(curto(byId[me].nome))}</b>`+(rh?' · <b>Modo RH</b>':''):'';
   $('#trocar').hidden=!me;
+  $('#ttl').textContent='Indicação de Férias '+ANO;document.title='Indicação de Férias '+ANO;
+  $('#fonteTxt').textContent='Dados de período e data-limite: relatório da folha (data-base '+fmtD(DATABASE)+').';
   if(!me){renderLogin();return}
   const pode=VE_TUDO.has(me);if(!pode){tab='mine';rh=false;editTarget=null}
-  const tabs=pode?[['mine','Minhas indicações'],['board','Quadro por setor'],['cal','Calendário '+ANO],['regras','Regras de cobertura'],['log','Atividade']]:[];
+  const tabs=pode?[['mine','Minhas indicações'],['board','Quadro por setor'],['cal','Calendário '+ANO],['regras','Regras de cobertura'],['colabs','Colaboradores e ano'],['log','Atividade']]:[];
   $('#rhLnk').hidden=!pode;
   $('#app').innerHTML=(rh?'<div class="rhbar">Modo RH ativo: você pode editar a indicação de qualquer colaborador e ignorar bloqueios de conflito. Alterações ficam registradas na aba Atividade.</div>':'')+
    (tabs.length?'<div class="tabs noprint" role="tablist">'+tabs.map(t=>`<button class="tab" role="tab" data-t="${t[0]}" aria-selected="${tab===t[0]}">${t[1]}</button>`).join('')+'</div>':'')+'<div id="panel"></div>';
   document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{tab=b.dataset.t;render()});
-  ({mine:renderMine,board:renderBoard,cal:renderCal,regras:renderRegras,log:renderLog})[tab]();
+  ({mine:renderMine,board:renderBoard,cal:renderCal,regras:renderRegras,colabs:renderColabs,log:renderLog})[tab]();
 }
 function renderLogin(){
   const setores=[...new Set(ROSTER.map(r=>r.secao))];
@@ -243,7 +308,7 @@ function renderMine(){
     if(new Set(usados).size!==usados.length){$('#erro').innerHTML='<div class="msg bad">Escolha meses diferentes nas três opções.</div>';return}
     const por=rh?'RH (gestão)':curto(byId[me].nome);const agora=new Date().toISOString();
     const opcoes=ms.map((m,i)=>{if(!m)return null;const antes=op[i];return antes&&antes.mes===m?antes:{mes:m,por,quando:agora}});
-    const novo={colabId:id,opcoes,obs:$('#obs').value.trim(),atualizadoPor:por,atualizadoEm:agora};
+    const novo={colabId:id,ano:ANO,opcoes,obs:$('#obs').value.trim(),atualizadoPor:por,atualizadoEm:agora};
     $('#salvar').disabled=true;$('#erro').innerHTML='';
     try{
       await DB.salvar(id,novo,por,rh);
@@ -313,6 +378,138 @@ function renderRegras(){
     else if(t.dataset.add){const v=$('[data-sel="'+t.dataset.add+'"]').value;if(!v){toast('Escolha a pessoa na lista.');return}mudar(t.dataset.add,v,'add')}
     else if(t.id==='nrGo'){const a=$('#nrA').value,b=$('#nrB').value;if(!a||!b){toast('Escolha as duas pessoas.');return}if(a===b){toast('Escolha pessoas diferentes.');return}if(byId[a].rel.some(x=>x.id===b)){toast('Essa regra já existe.');return}mudar(a,b,'add')}};
 }
+
+/* ====== aba: Colaboradores e ano (importar PDF da folha, incluir/editar/excluir) ====== */
+let FORM=null, IMP=null, pdfLib=null;
+function normNome(n){return String(n||'').normalize('NFD').replace(/[̀-ͯ]/g,'').toUpperCase().replace(/[^A-Z ]/g,' ').replace(/\s+/g,' ').trim()}
+function casarColab(pc,lista){
+  let r=lista.find(x=>x.cod&&x.cod===pc.cod);if(r)return r;
+  const n=normNome(pc.nome);r=lista.find(x=>normNome(x.nome)===n);if(r)return r;
+  const w=n.split(' '),f=w[0],l=w[w.length-1];
+  const c=lista.filter(x=>{const v=normNome(x.nome).split(' ');return v[0]===f&&v[v.length-1]===l});
+  return c.length===1?c[0]:null;
+}
+function docDe(r,por){
+  const p=r.periodos&&r.periodos.length?r.periodos:[];
+  return {id:r.id,nome:r.nome,setor:r.setor,grupo:r.grupo||'',cod:r.cod||'',ajuste:+r.ajuste||0,aqIni:r.aqIni||'',aqFim:r.aqFim||'',limite:r.limite||'',
+    recs:(r.recs||[]).map(x=>({ini:x.ini,fim:x.fim,dias:+x.dias||diasEntre(x.ini,x.fim),status:x.status||'Programada'})),
+    periodos:p.map(x=>({ini:x.ini,fim:x.fim,dir:String(x.dir||''),goz:String(x.goz||''),limite:x.limite})),
+    ativo:r.ativo!==false,atualizadoPor:por,atualizadoEm:new Date().toISOString()};
+}
+const quemSou=()=>curto(byId[me].nome);
+function carregarPdfjs(){
+  if(pdfLib)return Promise.resolve(pdfLib);
+  return new Promise((res,rej)=>{const sc=document.createElement('script');sc.src='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
+    sc.onload=()=>{window.pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';pdfLib=window.pdfjsLib;res(pdfLib)};
+    sc.onerror=()=>rej(new Error('Não foi possível carregar o leitor de PDF. Verifique a internet e tente de novo.'));document.head.appendChild(sc)});
+}
+async function lerPdf(file){
+  const lib=await carregarPdfjs();const doc=await lib.getDocument({data:new Uint8Array(await file.arrayBuffer())}).promise;
+  const lines=[];for(let i=1;i<=doc.numPages;i++){const tc=await (await doc.getPage(i)).getTextContent();lines.push(...linesFromItems(tc.items))}
+  const r=parseFolha(lines);if(!r.colabs.length)throw new Error('Não encontrei a tabela de "Programação de Férias" neste PDF. Envie o relatório da folha no mesmo formato.');return r;
+}
+function montarImport(res,ano,base){
+  const lista=[...ROSTER],usados=new Set(),alt=[],novos=[];
+  res.colabs.forEach(pc=>{const r=casarColab(pc,lista);
+    if(r){usados.add(r.id);const a=calcPeriodo(pc.periodos,r.recs,base,r.ajuste);
+      alt.push({r,pc,aqIni:a.ini,aqFim:a.fim,limite:a.limite,mudou:a.ini!==r.aqIni||a.fim!==r.aqFim||a.limite!==r.limite||(r.cod||'')!==pc.cod})}
+    else novos.push({pc,setor:'',ok:false})});
+  const fora=lista.filter(r=>!usados.has(r.id)).map(r=>({r,ok:false}));
+  return {ano,base,alt,novos,fora};
+}
+function renderColabs(){
+  const anos=[];for(let a=2026;a<=2035;a++)anos.push(a);
+  const setores=setoresLista();
+  const inativos=Object.values(COLABS).filter(o=>o.ativo===false);
+  let ih=`<div class="card" style="margin-bottom:14px"><h2>1. Ano das férias</h2>
+    <p class="hint">Define para qual ano os colaboradores indicam os meses. Ao trocar o ano, as indicações começam vazias e as do ano anterior ficam guardadas no banco.</p>
+    <div class="addr"><label for="cAno"><b>Ano:</b></label><select id="cAno">${anos.map(a=>`<option ${a===ANO?'selected':''}>${a}</option>`).join('')}</select>
+    <label for="cBase"><b>Data-base dos períodos:</b></label><input type="date" id="cBase" value="${esc(DATABASE)}"><button class="pri" id="cSalvar">Salvar</button></div></div>`;
+  ih+=`<div class="card" style="margin-bottom:14px"><h2>2. Atualizar com o PDF da folha</h2>
+    <p class="hint">Envie o relatório <b>Programação de Férias</b> da folha. O aplicativo lê os períodos aquisitivos e as datas-limite, calcula o período em curso de cada colaborador (descontando as férias já programadas) e mostra o que vai mudar antes de gravar.</p>
+    <div class="addr"><input type="file" id="pdfIn" accept="application/pdf,.pdf"><button class="pri" id="pdfLer">Ler PDF</button></div><div id="impBox"></div></div>`;
+  ih+=`<div class="card" style="margin-bottom:14px"><div class="tools" style="margin:0 0 8px"><h2 style="margin:0">3. Colaboradores (${ROSTER.length})</h2><button class="pri" id="novoC">+ Incluir colaborador</button></div><div id="formBox"></div>
+    <div class="tw"><table><thead><tr><th>Colaborador</th><th>Setor</th><th>Período em curso</th><th>Data-limite</th><th>Já programadas</th><th></th></tr></thead><tbody>${ROSTER.map(r=>`<tr><td class="nm">${esc(r.nome)}</td><td>${esc(r.secao)}</td><td>${r.aqIni?fmtD(r.aqIni)+' a '+fmtD(r.aqFim):'<span class="hint">não informado</span>'}</td><td>${fmtD(r.limite)}</td><td>${r.recs.length||'—'}</td><td style="white-space:nowrap"><button data-ed="${r.id}">Editar</button> <button data-ex="${r.id}" style="color:var(--bad)">Excluir</button></td></tr>`).join('')}</tbody></table></div>
+    ${inativos.length?`<h3>Excluídos (clique para restaurar)</h3>${inativos.map(o=>`<span class="rchip">${esc(o.nome)}<button data-rest="${o.id}" title="Restaurar" style="color:var(--ok)">↺</button></span>`).join('')}`:''}</div>`;
+  $('#panel').innerHTML=ih;
+  $('#cSalvar').onclick=async()=>{const a=+$('#cAno').value,b=$('#cBase').value;if(!b){toast('Informe a data-base.');return}
+    if(a!==ANO&&!confirm('Mudar para '+a+'? Todos passarão a ver as indicações de '+a+' (vazias até indicarem).'))return;
+    try{await DB.setCiclo({ano:a,dataBase:b,atualizadoPor:quemSou(),atualizadoEm:new Date().toISOString()});
+      DB.logar({quando:new Date().toISOString(),quem:quemSou(),colabId:me,colab:'',acao:'regra',texto:'definiu o ano das férias como '+a,slot:0,mes:'',anterior:''});toast('Ciclo salvo.')}catch(e){toast('Não foi possível salvar ('+(e.code||e.message)+').')}};
+  $('#novoC').onclick=()=>{FORM={novo:true,id:'n'+Date.now().toString(36),nome:'',setor:setores[0]||'',aqIni:'',aqFim:'',limite:'',recs:[],periodos:[],cod:'',grupo:''};formUI()};
+  $('#panel').onclick=async e=>{const t=e.target.closest('button');if(!t)return;
+    if(t.dataset.ed){const r=byId[t.dataset.ed];FORM={novo:false,...JSON.parse(JSON.stringify(r)),recsOrig:JSON.stringify(r.recs)};formUI();$('#formBox').scrollIntoView({behavior:'smooth'})}
+    else if(t.dataset.ex){const r=byId[t.dataset.ex];if(!confirm('Excluir '+r.nome+'? Ela(e) deixa de aparecer no aplicativo (dá para restaurar depois).'))return;
+      try{await DB.setColab(docDe({...r,ativo:false},quemSou()));toast('Colaborador excluído.')}catch(er){toast('Não foi possível salvar ('+(er.code||er.message)+').')}}
+    else if(t.dataset.rest){const o=COLABS[t.dataset.rest];try{await DB.setColab({...o,ativo:true,atualizadoPor:quemSou(),atualizadoEm:new Date().toISOString()});toast('Colaborador restaurado.')}catch(er){toast('Não foi possível salvar ('+(er.code||er.message)+').')}}
+    else if(t.id==='pdfLer'){const f=$('#pdfIn').files[0];if(!f){toast('Escolha o arquivo PDF.');return}
+      t.disabled=true;$('#impBox').innerHTML='<p class="hint">Lendo o PDF…</p>';
+      try{const res=await lerPdf(f);IMP=montarImport(res,res.emissao?+res.emissao.slice(0,4)+1:ANO,res.emissao||DATABASE);if(IMP.ano<ANO)IMP.ano=ANO;impUI()}catch(er){IMP=null;$('#impBox').innerHTML='<div class="msg bad">'+esc(er.message||'Erro ao ler o PDF.')+'</div>'}
+      t.disabled=false}};
+  if(FORM)formUI();if(IMP)impUI();
+}
+function impUI(){
+  const I=IMP,anos=[];for(let a=2026;a<=2035;a++)anos.push(a);
+  const mud=I.alt.filter(x=>x.mudou);
+  $('#impBox').innerHTML=`<div class="rhbar" style="margin-top:10px">Lido: <b>${I.alt.length+I.novos.length}</b> colaboradores no PDF · <b>${mud.length}</b> com período/limite diferente · <b>${I.novos.length}</b> não cadastrados · <b>${I.fora.length}</b> cadastrados que não estão no PDF.</div>
+   <div class="addr" style="margin:8px 0"><label for="iAno"><b>Ano das férias deste ciclo:</b></label><select id="iAno">${anos.map(a=>`<option ${a===I.ano?'selected':''}>${a}</option>`).join('')}</select><label for="iBase"><b>Data-base:</b></label><input type="date" id="iBase" value="${esc(I.base)}"></div>
+   ${mud.length?`<div class="tw" style="max-height:40vh;margin-bottom:10px"><table><thead><tr><th>Colaborador</th><th>Período em curso (antes → depois)</th><th>Data-limite (antes → depois)</th></tr></thead><tbody>${mud.map(x=>`<tr><td class="nm">${esc(x.r.nome)}</td><td>${x.r.aqIni?fmtD(x.r.aqIni)+' a '+fmtD(x.r.aqFim):'—'} → <b>${fmtD(x.aqIni)} a ${fmtD(x.aqFim)}</b></td><td>${fmtD(x.r.limite)} → <b>${fmtD(x.limite)}</b></td></tr>`).join('')}</tbody></table></div>`:'<p class="hint">Nenhum período mudou para os colaboradores já cadastrados.</p>'}
+   ${I.novos.length?`<h3>No PDF e não cadastrados (marque para incluir)</h3>${I.novos.map((n,i)=>`<div class="addr" style="margin-bottom:4px"><label><input type="checkbox" data-nn="${i}" ${n.ok?'checked':''}> ${esc(n.pc.nome)}</label><select data-ns="${i}"><option value="">Setor…</option>${setoresLista().map(s=>`<option ${n.setor===s?'selected':''}>${esc(s)}</option>`).join('')}</select></div>`).join('')}`:''}
+   ${I.fora.length?`<h3>Cadastrados que não estão no PDF (marque para excluir)</h3>${I.fora.map((n,i)=>`<div style="margin-bottom:2px"><label><input type="checkbox" data-nf="${i}" ${n.ok?'checked':''}> ${esc(n.r.nome)}</label></div>`).join('')}<p class="hint">Se não marcar, continuam como estão (os períodos deles não mudam).</p>`:''}
+   <div style="margin-top:10px"><button class="pri" id="impOk">Aplicar atualização</button> <button id="impNo">Cancelar</button></div>`;
+  $('#iAno').onchange=()=>{I.ano=+$('#iAno').value};
+  $('#iBase').onchange=()=>{I.base=$('#iBase').value;const m=montarImport({colabs:IMP.alt.map(x=>x.pc).concat(IMP.novos.map(x=>x.pc))},I.ano,I.base);I.alt=m.alt};
+  document.querySelectorAll('[data-nn]').forEach(c=>c.onchange=()=>{I.novos[+c.dataset.nn].ok=c.checked});
+  document.querySelectorAll('[data-ns]').forEach(c=>c.onchange=()=>{I.novos[+c.dataset.ns].setor=c.value});
+  document.querySelectorAll('[data-nf]').forEach(c=>c.onchange=()=>{I.fora[+c.dataset.nf].ok=c.checked});
+  $('#impNo').onclick=()=>{IMP=null;$('#impBox').innerHTML=''};
+  $('#impOk').onclick=async()=>{
+    I.ano=+$('#iAno').value;I.base=$('#iBase').value;
+    const m=montarImport({colabs:I.alt.map(x=>x.pc).concat(I.novos.map(x=>x.pc))},I.ano,I.base);I.alt=m.alt;
+    const inc=I.novos.filter(n=>n.ok);if(inc.some(n=>!n.setor)){toast('Escolha o setor de quem você marcou para incluir.');return}
+    const por=quemSou(),docs=[];
+    I.alt.forEach(x=>{const d=docDe(x.r,por);d.cod=x.pc.cod;d.periodos=x.pc.periodos.map(p=>({ini:p.ini,fim:p.fim,dir:p.dir,goz:p.goz,limite:p.limite}));d.aqIni=x.aqIni;d.aqFim=x.aqFim;d.limite=x.limite;docs.push(d)});
+    inc.forEach(n=>{const a=calcPeriodo(n.pc.periodos,[],I.base);docs.push(docDe({id:'n'+Date.now().toString(36)+Math.random().toString(36).slice(2,5),nome:n.pc.nome.toLowerCase().replace(/(^|\s)\S/g,c=>c.toUpperCase()).replace(/ (D[aeo]s?|E) /g,x=>x.toLowerCase()),setor:n.setor,cod:n.pc.cod,aqIni:a.ini,aqFim:a.fim,limite:a.limite,recs:[],periodos:n.pc.periodos},por))});
+    I.fora.filter(n=>n.ok).forEach(n=>docs.push(docDe({...n.r,ativo:false},por)));
+    $('#impOk').disabled=true;
+    try{await DB.setColabs(docs);await DB.setCiclo({ano:I.ano,dataBase:I.base,atualizadoPor:por,atualizadoEm:new Date().toISOString()});
+      DB.logar({quando:new Date().toISOString(),quem:por,colabId:me,colab:'',acao:'regra',texto:'atualizou períodos e limites pelo PDF da folha (ano '+I.ano+')',slot:0,mes:'',anterior:''});
+      IMP=null;toast('Atualização aplicada. Todos já veem os novos dados.');render()}catch(e){$('#impOk').disabled=false;toast('Não foi possível salvar ('+(e.code||e.message)+').')}};
+}
+function formUI(){
+  const F=FORM,setores=setoresLista();const novoSetor=F.setor&&!setores.includes(F.setor);
+  $('#formBox').innerHTML=`<div class="card" style="border:2px solid var(--brass);margin-bottom:12px"><h2>${F.novo?'Incluir colaborador':'Editar '+esc(F.nome)}</h2>
+   <div class="grid2"><div>
+    <div class="field"><label for="fNome">Nome completo</label><input id="fNome" value="${esc(F.nome)}"></div>
+    <div class="field"><label for="fSetor">Setor</label><select id="fSetor">${setores.map(s=>`<option ${F.setor===s?'selected':''}>${esc(s)}</option>`).join('')}<option value="__novo" ${novoSetor?'selected':''}>+ Novo setor…</option></select><input id="fSetorN" placeholder="Nome do novo setor" value="${novoSetor?esc(F.setor):''}" ${novoSetor?'':'hidden'}></div>
+    <div class="field"><label for="fCod">Código na folha (opcional, ajuda a casar com o PDF)</label><input id="fCod" value="${esc(F.cod||'')}"></div>
+   </div><div>
+    <div class="field"><label>Período aquisitivo em curso</label><div class="addr"><input type="date" id="fAi" value="${esc(F.aqIni||'')}"> a <input type="date" id="fAf" value="${esc(F.aqFim||'')}"></div></div>
+    <div class="field"><label for="fLim">Data-limite para gozo</label><input type="date" id="fLim" value="${esc(F.limite||'')}"></div>
+    <div class="field"><label for="fAj">Dias adicionais a descontar do período (ex.: dias vendidos/abono)</label><input type="number" id="fAj" min="0" max="30" step="0.5" value="${+F.ajuste||0}"><span class="hint">Somam-se às férias programadas listadas abaixo.</span></div>
+    <p class="hint">${F.periodos&&F.periodos.length?'Estes campos são recalculados pelo PDF da folha e quando você altera as férias programadas.':'Sem PDF para este colaborador: preencha as datas manualmente.'}</p>
+   </div></div>
+   <h3>Férias já programadas</h3><div id="fRecs">${F.recs.map((x,i)=>`<div class="addr" style="margin-bottom:4px"><input type="date" data-ri="${i}" value="${esc(x.ini)}"> a <input type="date" data-rf="${i}" value="${esc(x.fim)}"><button data-rdel="${i}" style="color:var(--bad)">Remover</button></div>`).join('')||'<p class="hint">Nenhuma.</p>'}</div>
+   <button id="fAddR" style="margin-top:4px">+ Adicionar férias programadas</button>
+   <div style="margin-top:12px"><button class="pri" id="fOk">Salvar colaborador</button> <button id="fNo">Cancelar</button> <span id="fErro"></span></div></div>`;
+  const ler=()=>{F.nome=$('#fNome').value.trim();const sv=$('#fSetor').value;F.setor=sv==='__novo'?$('#fSetorN').value.trim():sv;F.cod=$('#fCod').value.trim();F.ajuste=+$('#fAj').value||0;F.aqIni=$('#fAi').value;F.aqFim=$('#fAf').value;F.limite=$('#fLim').value;
+    F.recs=F.recs.map((x,i)=>({...x,ini:$('[data-ri="'+i+'"]').value,fim:$('[data-rf="'+i+'"]').value}))};
+  $('#fSetor').onchange=()=>{$('#fSetorN').hidden=$('#fSetor').value!=='__novo'};
+  $('#fAddR').onclick=()=>{ler();F.recs.push({ini:'',fim:'',status:'Programada'});formUI()};
+  document.querySelectorAll('[data-rdel]').forEach(b=>b.onclick=()=>{ler();F.recs.splice(+b.dataset.rdel,1);formUI()});
+  $('#fNo').onclick=()=>{FORM=null;$('#formBox').innerHTML=''};
+  $('#fOk').onclick=async()=>{ler();
+    const er=m=>{$('#fErro').innerHTML='<span class="msg bad">'+m+'</span>'};
+    if(!F.nome)return er('Informe o nome.');if(!F.setor)return er('Informe o setor.');
+    if(F.recs.some(x=>!x.ini||!x.fim||x.fim<x.ini))return er('Confira as datas das férias programadas.');
+    if(F.novo&&ROSTER.some(r=>normNome(r.nome)===normNome(F.nome)))return er('Já existe um colaborador com esse nome.');
+    const d=docDe(F,quemSou());d.recs=F.recs.map(x=>({ini:x.ini,fim:x.fim,dias:diasEntre(x.ini,x.fim),status:x.status||'Programada'}));
+    if(!F.novo&&d.periodos.length&&JSON.stringify(d.recs)!==F.recsOrig&&F.aqIni===byId[F.id].aqIni&&F.aqFim===byId[F.id].aqFim&&F.limite===byId[F.id].limite){
+      const a=calcPeriodo(d.periodos,d.recs,DATABASE,d.ajuste);if(a){d.aqIni=a.ini;d.aqFim=a.fim;d.limite=a.limite}}
+    $('#fOk').disabled=true;
+    try{await DB.setColab(d);DB.logar({quando:new Date().toISOString(),quem:quemSou(),colabId:d.id,colab:d.nome,acao:'regra',texto:(F.novo?'incluiu o colaborador ':'editou o colaborador ')+d.nome,slot:0,mes:'',anterior:''});FORM=null;toast('Colaborador salvo.');render()}
+    catch(e){$('#fOk').disabled=false;er('Não foi possível salvar ('+esc(e.code||e.message)+').')}};
+}
 function renderLog(){
   $('#panel').innerHTML=`<div class="card"><h2>Últimas movimentações</h2>${LOG.length?`<ul class="log">${LOG.map(l=>`<li><b>${esc(l.quem)}</b> ${l.acao==='regra'?esc(l.texto||'alterou uma regra'):l.acao==='removeu'?'removeu a '+l.slot+'ª opção ('+(l.anterior?mlabel(l.anterior):'')+')':(l.acao==='alterou'?'alterou a '+l.slot+'ª opção para <b>'+mlabel(l.mes)+'</b>':'indicou <b>'+mlabel(l.mes)+'</b> como '+l.slot+'ª opção')}${l.acao!=='regra'&&l.quem!==curto(l.colab)&&l.colab?' de <b>'+esc(curto(l.colab))+'</b>':''}<br><small>${when(l.quando)}</small></li>`).join('')}</ul>`:'<p class="hint">Ainda não há movimentações.</p>'}</div>`;
 }
@@ -321,21 +518,32 @@ function renderLog(){
 $('#trocar').onclick=()=>{me=null;rh=false;editTarget=null;ls('fer_me',null);render()};
 $('#rhLnk').onclick=()=>{rh=!rh;editTarget=null;toast(rh?'Modo RH ligado.':'Modo RH desligado.');render()};
 if(me&&!byId[me])me=null;
+let unsubPref=null;
+function aplicarCiclo(c){
+  const ano=+c.ano||ANO,base=c.dataBase||DATABASE;
+  const mudouAno=ano!==ANO;ANO=ano;DATABASE=base;rebuildRoster();
+  if(mudouAno){PREF={};if(unsubPref)unsubPref();
+    unsubPref=DB.listenPref(ANO,o=>{PREF=o;render2()},()=>{})}
+  render2();
+}
 (async()=>{
   render();
   try{
     await initDB();
     if(DB.modo==='fb'){
-      DB.listenPref(o=>{PREF=o;$('#dot').className='dot on';$('#liveTxt').textContent='Ao vivo';render2()},e=>{$('#dot').className='dot off';$('#liveTxt').textContent='Sem conexão';$('#banner').innerHTML='<div class="ban">Não foi possível conectar ao banco de dados ('+esc(e.code||e.message)+'). Se o problema continuar, avise o RH.</div>'});
+      unsubPref=DB.listenPref(ANO,o=>{PREF=o;$('#dot').className='dot on';$('#liveTxt').textContent='Ao vivo';render2()},e=>{$('#dot').className='dot off';$('#liveTxt').textContent='Sem conexão';$('#banner').innerHTML='<div class="ban">Não foi possível conectar ao banco de dados ('+esc(e.code||e.message)+'). Se o problema continuar, avise o RH.</div>'});
       DB.listenLog(l=>{LOG=l;if(tab==='log')render2()});
       DB.listenRegras(o=>{REGRAS=o||{};applyRegras();render2()},()=>{});
-    }else{DB.listenPref(o=>{PREF=o;render2()});DB.listenRegras(o=>{REGRAS=o;applyRegras();render2()});}
+      DB.listenColabs(o=>{COLABS=o||{};rebuildRoster();if(me&&!byId[me]){me=null;ls('fer_me',null)}render2()},()=>{});
+      DB.listenCiclo(c=>{aplicarCiclo(c)},()=>{});
+    }else{unsubPref=DB.listenPref(ANO,o=>{PREF=o;render2()});DB.listenRegras(o=>{REGRAS=o;applyRegras();render2()});DB.listenColabs(o=>{COLABS=o;rebuildRoster();render2()});}
   }catch(e){$('#dot').className='dot off';$('#liveTxt').textContent='Sem conexão';$('#banner').innerHTML='<div class="ban">Não foi possível carregar o aplicativo ('+esc(e.message)+').</div>'}
 })();
 /* evita perder o que está sendo digitado quando chega atualização de outro colaborador */
 function render2(){
   const ae=document.activeElement;
-  if(tab==='regras'&&me&&ae&&ae.closest&&ae.closest('#panel')&&ae.tagName==='SELECT')return;
+  if((tab==='regras'||tab==='colabs')&&me&&ae&&ae.closest&&ae.closest('#panel')&&['SELECT','INPUT','TEXTAREA'].includes(ae.tagName))return;
+  if(tab==='colabs'&&(FORM||IMP)&&me){const fb=$('#formBox'),ib=$('#impBox');if(fb||ib){/* não perde o formulário aberto */return}}
   if(tab==='mine'&&me&&ae&&ae.closest&&ae.closest('#panel')&&['SELECT','TEXTAREA'].includes(ae.tagName)){ // só atualiza avisos de bloqueio
     const id=alvoId();[0,1,2].forEach(i=>{const s=$('#op'+i);if(!s)return;[...s.options].forEach(o=>{if(!o.value)return;const b=bloqueio(id,o.value,i);const k=+o.value.slice(5)-1;o.disabled=!!b&&!rh;o.textContent=MESES[k]+(b?' — '+b:'')})});return}
   render();
