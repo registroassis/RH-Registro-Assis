@@ -73,6 +73,10 @@ footer a,footer button.lnk{background:none;border:0;padding:0;font:inherit;color
 .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:#152A50;color:#fff;padding:10px 16px;border-radius:8px;font-size:13px;z-index:9;max-width:90vw}
 .ban{background:var(--badbg);color:var(--bad);padding:10px 14px;border-radius:8px;margin-bottom:12px;font-size:13px}
 .rhbar{background:var(--warnbg);color:var(--warn);padding:8px 12px;border-radius:8px;margin-bottom:12px;font-size:13px}
+.rchip{display:inline-flex;align-items:center;gap:4px;background:var(--band);border:1px solid var(--line);border-radius:14px;padding:2px 4px 2px 9px;margin:2px 4px 2px 0;font-size:12px;white-space:nowrap}
+.rchip.nova{border-color:var(--brass)}
+.rchip button{border:0;background:none;padding:0 5px;font-size:15px;line-height:1;color:var(--bad);cursor:pointer;border-radius:50%}
+.addr{display:flex;gap:6px;align-items:center;flex-wrap:wrap}.addr select{font-size:12px;padding:5px 6px;max-width:170px}.addr button{padding:5px 10px;font-size:12px}
 @page{size:A4 landscape;margin:8mm}
 @media print{.noprint,.tabs,header .who,footer{display:none!important}body{background:#fff;color:#000;font-size:10px}.tw{max-height:none;overflow:visible}th{position:static}.panel{display:block!important}}
 </style>
@@ -106,6 +110,19 @@ ROSTER.forEach(r=>{r.secao=SO_BACKUP[r.id]||r.setor});
 {const ord=[...new Set(ROSTER.map(r=>r.secao))].filter(s=>s!=='Backup').concat(['Backup']);
  ROSTER.sort((a,b)=>ord.indexOf(a.secao)-ord.indexOf(b.secao));}
 const byId=Object.fromEntries(ROSTER.map(r=>[r.id,r]));
+/* regras de cobertura: base (cadastro) + ajustes feitos pelo RH em tempo real */
+const BASE_REL=Object.fromEntries(ROSTER.map(r=>[r.id,r.rel.map(x=>({...x}))]));
+let REGRAS={};
+const pk=(a,b)=>a<b?a+'|'+b:b+'|'+a;
+function applyRegras(){
+  const ord=Object.fromEntries(ROSTER.map((r,i)=>[r.id,i]));
+  ROSTER.forEach(r=>{
+    const rel=BASE_REL[r.id].filter(x=>REGRAS[pk(r.id,x.id)]!==false);
+    Object.keys(REGRAS).forEach(k=>{if(REGRAS[k]!==true)return;const [a,b]=k.split('|');const o=a===r.id?b:(b===r.id?a:null);
+      if(o&&byId[o]&&!rel.some(x=>x.id===o))rel.push({id:o,tipo:'nova'})});
+    rel.sort((x,y)=>ord[x.id]-ord[y.id]);r.rel=rel});
+}
+const inBase=(a,b)=>BASE_REL[a].some(x=>x.id===b);
 const CURTO={c002:'Ana Laura',c003:'Ana Luiza Silva',c004:'Ana Luiza Nizoli'};
 const curto=n=>{const r=ROSTER.find(x=>x.nome===n);if(r&&CURTO[r.id])return CURTO[r.id];const p=n.split(' ');return p.length>1?p[0]+' '+p[p.length-1]:n};
 const when=iso=>{try{return new Date(iso).toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit',timeZone:'America/Sao_Paulo'})}catch(e){return ''}};
@@ -128,6 +145,8 @@ async function initDB(){
     DB={modo:'demo',
       listenPref(cb){subs.push(cb);cb({...store});$('#dot').className='dot on';$('#liveTxt').textContent='Modo demonstração (não grava)';},
       listenLog(cb){cb([])},
+      listenRegras(cb){cb({...REGRAS})},
+      async setPar(key,val){if(val===undefined)delete REGRAS[key];else REGRAS[key]=val;applyRegras();render2()},
       async salvar(cid,novo,por,rhmode){
         const confl=conflitoDe(cid,novo.opcoes,store);
         if(confl&&!rhmode)throw new Error(confl);
@@ -143,6 +162,10 @@ async function initDB(){
   DB={modo:'fb',
     listenPref(cb,err){return F.onSnapshot(F.collection(db,'ferias_pref'),s=>{const o={};s.forEach(d=>o[d.id]=d.data());cb(o)},err)},
     listenLog(cb){return F.onSnapshot(F.query(F.collection(db,'ferias_log'),F.orderBy('quando','desc'),F.limit(80)),s=>{cb(s.docs.map(d=>d.data()))},()=>{})},
+    listenRegras(cb,err){return F.onSnapshot(F.doc(db,'ferias_config','regras'),s=>{cb(s.exists()?(s.data().pares||{}):{})},err)},
+    async setPar(key,val,por){
+      await F.setDoc(F.doc(db,'ferias_config','regras'),{pares:{[key]:val===undefined?F.deleteField():val},atualizadoPor:por,atualizadoEm:new Date().toISOString()},{merge:true});
+    },
     async salvar(cid,novo,por,rhmode){
       await F.runTransaction(db,async tx=>{
         const ref=F.doc(db,'ferias_pref',cid);await tx.get(ref);
@@ -182,12 +205,12 @@ function render(){
   $('#trocar').hidden=!me;
   if(!me){renderLogin();return}
   const pode=VE_TUDO.has(me);if(!pode){tab='mine';rh=false;editTarget=null}
-  const tabs=pode?[['mine','Minhas indicações'],['board','Quadro por setor'],['cal','Calendário '+ANO],['log','Atividade']]:[];
+  const tabs=pode?[['mine','Minhas indicações'],['board','Quadro por setor'],['cal','Calendário '+ANO],['regras','Regras de cobertura'],['log','Atividade']]:[];
   $('#rhLnk').hidden=!pode;
   $('#app').innerHTML=(rh?'<div class="rhbar">Modo RH ativo: você pode editar a indicação de qualquer colaborador e ignorar bloqueios de conflito. Alterações ficam registradas na aba Atividade.</div>':'')+
    (tabs.length?'<div class="tabs noprint" role="tablist">'+tabs.map(t=>`<button class="tab" role="tab" data-t="${t[0]}" aria-selected="${tab===t[0]}">${t[1]}</button>`).join('')+'</div>':'')+'<div id="panel"></div>';
   document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{tab=b.dataset.t;render()});
-  ({mine:renderMine,board:renderBoard,cal:renderCal,log:renderLog})[tab]();
+  ({mine:renderMine,board:renderBoard,cal:renderCal,regras:renderRegras,log:renderLog})[tab]();
 }
 function renderLogin(){
   const setores=[...new Set(ROSTER.map(r=>r.secao))];
@@ -263,8 +286,35 @@ function renderCal(){
   $('#panel').innerHTML=`<div class="legend"><span><i style="background:var(--o1)"></i>1ª opção</span><span><i style="background:var(--o2)"></i>2ª opção</span><span><i style="background:var(--o3)"></i>3ª opção</span><span><i style="background:var(--prog)"></i>Férias já programadas</span><span><i style="background:var(--bad)"></i>Conflito entre quem se cobre</span></div>
   <div class="tw cal"><table><thead><tr><th>Colaborador</th>${MABR.map(m=>`<th class="m">${m}</th>`).join('')}</tr></thead><tbody>${rows}</tbody></table></div>`;
 }
+function renderRegras(){
+  const opts=(r)=>ROSTER.filter(o=>o.id!==r.id&&!r.rel.some(x=>x.id===o.id)).map(o=>`<option value="${o.id}">${esc(curto(o.nome))}</option>`).join('');
+  const all=ROSTER.map(o=>`<option value="${o.id}">${esc(curto(o.nome))} (${esc(o.secao)})</option>`).join('');
+  let rows='',cur='';
+  ROSTER.forEach(r=>{if(r.secao!==cur){cur=r.secao;rows+=`<tr class="sec"><td colspan="2">${esc(cur)}</td></tr>`}
+    rows+=`<tr><td class="nm">${esc(curto(r.nome))}</td><td>${r.rel.map(x=>`<span class="rchip ${x.tipo==='nova'?'nova':''}">${esc(curto(byId[x.id].nome))}${x.tipo==='nova'?' ★':''}<button data-rm="${r.id}|${x.id}" title="Remover esta regra (vale para os dois)" aria-label="Remover ${esc(curto(byId[x.id].nome))}">×</button></span>`).join('')||'<span class="hint">sem regras</span>'}
+      <div class="addr"><select data-sel="${r.id}"><option value="">+ incluir…</option>${opts(r)}</select><button data-add="${r.id}">Incluir</button></div></td></tr>`});
+  const rem=Object.keys(REGRAS).filter(k=>REGRAS[k]===false).map(k=>{const [a,b]=k.split('|');return `<span class="rchip">${esc(curto(byId[a].nome))} ↔ ${esc(curto(byId[b].nome))}<button data-rs="${a}|${b}" title="Restaurar" style="color:var(--ok)">↺</button></span>`}).join('');
+  $('#panel').innerHTML=`<div class="card" style="margin-bottom:14px"><h2>Quem não pode sair de férias no mesmo mês</h2>
+   <p class="hint">Cada regra vale para as duas pessoas (se A não pode sair com B, B também não pode sair com A). Ao incluir ou remover, o aplicativo de <b>todos os colaboradores</b> é atualizado na hora. ★ = regra criada por vocês. Indicações já feitas não são apagadas; o conflito só passa a valer para novas indicações.</p>
+   <div class="addr" style="margin-top:8px"><b style="font-size:13px">Nova regra:</b><select id="nrA"><option value="">Pessoa 1…</option>${all}</select><span>não pode sair com</span><select id="nrB"><option value="">Pessoa 2…</option>${all}</select><button class="pri" id="nrGo">Criar regra</button></div></div>
+   ${rem?`<div class="card" style="margin-bottom:14px"><h2>Regras removidas (clique ↺ para restaurar)</h2>${rem}</div>`:''}
+   <div class="tw"><table><thead><tr><th>Colaborador</th><th>Não pode sair no mesmo mês que</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+  const quem=curto(byId[me].nome);
+  const mudar=async(a,b,acao)=>{
+    const key=pk(a,b);let val;
+    if(acao==='add')val=inBase(a,b)?undefined:true;else val=inBase(a,b)?false:undefined;
+    try{await DB.setPar(key,val,quem);
+      DB.logar({quando:new Date().toISOString(),quem,colabId:a,colab:byId[a].nome,acao:'regra',texto:(acao==='add'?'criou a regra: ':'removeu a regra: ')+curto(byId[a].nome)+' ↔ '+curto(byId[b].nome),slot:0,mes:'',anterior:''});
+      toast(acao==='add'?'Regra criada. Todos já veem a atualização.':'Regra removida. Todos já veem a atualização.');
+    }catch(e){toast('Não foi possível salvar a regra ('+(e.code||e.message)+'). Verifique as regras do Firestore.')}};
+  $('#panel').onclick=e=>{const t=e.target.closest('button');if(!t)return;
+    if(t.dataset.rm){const [a,b]=t.dataset.rm.split('|');mudar(a,b,'rem')}
+    else if(t.dataset.rs){const [a,b]=t.dataset.rs.split('|');mudar(a,b,'add')}
+    else if(t.dataset.add){const v=$('[data-sel="'+t.dataset.add+'"]').value;if(!v){toast('Escolha a pessoa na lista.');return}mudar(t.dataset.add,v,'add')}
+    else if(t.id==='nrGo'){const a=$('#nrA').value,b=$('#nrB').value;if(!a||!b){toast('Escolha as duas pessoas.');return}if(a===b){toast('Escolha pessoas diferentes.');return}if(byId[a].rel.some(x=>x.id===b)){toast('Essa regra já existe.');return}mudar(a,b,'add')}};
+}
 function renderLog(){
-  $('#panel').innerHTML=`<div class="card"><h2>Últimas movimentações</h2>${LOG.length?`<ul class="log">${LOG.map(l=>`<li><b>${esc(l.quem)}</b> ${l.acao==='removeu'?'removeu a '+l.slot+'ª opção ('+(l.anterior?mlabel(l.anterior):'')+')':(l.acao==='alterou'?'alterou a '+l.slot+'ª opção para <b>'+mlabel(l.mes)+'</b>':'indicou <b>'+mlabel(l.mes)+'</b> como '+l.slot+'ª opção')}${l.quem!==curto(l.colab)&&l.colab?' de <b>'+esc(curto(l.colab))+'</b>':''}<br><small>${when(l.quando)}</small></li>`).join('')}</ul>`:'<p class="hint">Ainda não há movimentações.</p>'}</div>`;
+  $('#panel').innerHTML=`<div class="card"><h2>Últimas movimentações</h2>${LOG.length?`<ul class="log">${LOG.map(l=>`<li><b>${esc(l.quem)}</b> ${l.acao==='regra'?esc(l.texto||'alterou uma regra'):l.acao==='removeu'?'removeu a '+l.slot+'ª opção ('+(l.anterior?mlabel(l.anterior):'')+')':(l.acao==='alterou'?'alterou a '+l.slot+'ª opção para <b>'+mlabel(l.mes)+'</b>':'indicou <b>'+mlabel(l.mes)+'</b> como '+l.slot+'ª opção')}${l.acao!=='regra'&&l.quem!==curto(l.colab)&&l.colab?' de <b>'+esc(curto(l.colab))+'</b>':''}<br><small>${when(l.quando)}</small></li>`).join('')}</ul>`:'<p class="hint">Ainda não há movimentações.</p>'}</div>`;
 }
 
 /* ====== inicialização ====== */
@@ -278,12 +328,14 @@ if(me&&!byId[me])me=null;
     if(DB.modo==='fb'){
       DB.listenPref(o=>{PREF=o;$('#dot').className='dot on';$('#liveTxt').textContent='Ao vivo';render2()},e=>{$('#dot').className='dot off';$('#liveTxt').textContent='Sem conexão';$('#banner').innerHTML='<div class="ban">Não foi possível conectar ao banco de dados ('+esc(e.code||e.message)+'). Se o problema continuar, avise o RH.</div>'});
       DB.listenLog(l=>{LOG=l;if(tab==='log')render2()});
-    }else{DB.listenPref(o=>{PREF=o;render2()});}
+      DB.listenRegras(o=>{REGRAS=o||{};applyRegras();render2()},()=>{});
+    }else{DB.listenPref(o=>{PREF=o;render2()});DB.listenRegras(o=>{REGRAS=o;applyRegras();render2()});}
   }catch(e){$('#dot').className='dot off';$('#liveTxt').textContent='Sem conexão';$('#banner').innerHTML='<div class="ban">Não foi possível carregar o aplicativo ('+esc(e.message)+').</div>'}
 })();
 /* evita perder o que está sendo digitado quando chega atualização de outro colaborador */
 function render2(){
   const ae=document.activeElement;
+  if(tab==='regras'&&me&&ae&&ae.closest&&ae.closest('#panel')&&ae.tagName==='SELECT')return;
   if(tab==='mine'&&me&&ae&&ae.closest&&ae.closest('#panel')&&['SELECT','TEXTAREA'].includes(ae.tagName)){ // só atualiza avisos de bloqueio
     const id=alvoId();[0,1,2].forEach(i=>{const s=$('#op'+i);if(!s)return;[...s.options].forEach(o=>{if(!o.value)return;const b=bloqueio(id,o.value,i);const k=+o.value.slice(5)-1;o.disabled=!!b&&!rh;o.textContent=MESES[k]+(b?' — '+b:'')})});return}
   render();
