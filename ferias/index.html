@@ -264,19 +264,21 @@ async function initDB(){
 
 /* conflito: algum relacionado já indicou o mesmo mês ou tem férias programadas nele */
 function conflitoDe(cid,opcoes,pref){
-  for(const o of opcoes){ if(!o)continue;
+  /* o bloqueio é por opção: só conflita se quem se cobre indicou o MESMO mês na MESMA opção (1ª com 1ª, 2ª com 2ª, 3ª com 3ª) */
+  for(let i=0;i<opcoes.length;i++){const o=opcoes[i];if(!o)continue;
     for(const rel of byId[cid].rel){
       const p=pref[rel.id]; const outro=byId[rel.id];
-      if(p&&(p.opcoes||[]).some(x=>x&&x.mes===o.mes)){const x=p.opcoes.find(x=>x&&x.mes===o.mes);return `${mlabel(o.mes)} já foi indicado por ${curto(outro.nome)} (quem se cobre não pode sair junto). Escolha outro mês.`}
+      const x=p&&(p.opcoes||[])[i];
+      if(x&&x.mes===o.mes)return `${mlabel(o.mes)} já foi indicado por ${curto(outro.nome)} como ${i+1}ª opção (quem se cobre não pode sair junto). Escolha outro mês para a ${i+1}ª opção.`;
       if(PROG[rel.id]&&PROG[rel.id].has(o.mes))return `${curto(outro.nome)} já tem férias programadas em ${mlabel(o.mes)}. Escolha outro mês.`;
     }}
   return null;
 }
 /* conflitos exibidos no quadro (pares com mesmo mês indicado) */
 function conflitosVivos(){
-  const res={}; // id -> Set de meses em conflito
-  ROSTER.forEach(a=>{const pa=PREF[a.id];if(!pa)return;(pa.opcoes||[]).forEach(o=>{if(!o)return;
-    a.rel.forEach(r=>{const pb=PREF[r.id];const hit=(pb&&(pb.opcoes||[]).some(x=>x&&x.mes===o.mes))||(PROG[r.id]&&PROG[r.id].has(o.mes));
+  const res={}; // id -> Set de meses em conflito (mesma opção)
+  ROSTER.forEach(a=>{const pa=PREF[a.id];if(!pa)return;(pa.opcoes||[]).forEach((o,i)=>{if(!o)return;
+    a.rel.forEach(r=>{const pb=PREF[r.id];const hit=(pb&&(pb.opcoes||[])[i]&&pb.opcoes[i].mes===o.mes)||(PROG[r.id]&&PROG[r.id].has(o.mes));
       if(hit)(res[a.id]=res[a.id]||new Set()).add(o.mes)})})});
   return res;
 }
@@ -318,7 +320,7 @@ function alvoId(){return rh&&editTarget?editTarget:me}
 function renderMine(){
   const id=alvoId(),r=byId[id],p=PREF[id]||{opcoes:[null,null,null],obs:''};
   const op=[0,1,2].map(i=>(p.opcoes||[])[i]||null);
-  const rels=r.rel.map(x=>{const o=byId[x.id],po=PREF[x.id];const ms=(po?.opcoes||[]).filter(Boolean).map(m=>MABR[+m.mes.slice(5)-1]).join(', ');return `<li><b>${esc(curto(o.nome))}</b>${x.tipo==='cad'?' <span class="hint">(cadastro)</span>':''}: ${ms||'<span class="hint">ainda não indicou</span>'}</li>`}).join('');
+  const rels=r.rel.map(x=>{const o=byId[x.id],po=PREF[x.id];const ms=(po?.opcoes||[]).map((m,i)=>m?MABR[+m.mes.slice(5)-1]+' ('+(i+1)+'ª)':null).filter(Boolean).join(', ');return `<li><b>${esc(curto(o.nome))}</b>${x.tipo==='cad'?' <span class="hint">(cadastro)</span>':''}: ${ms||'<span class="hint">ainda não indicou</span>'}</li>`}).join('');
   const optsHTML=i=>{const sel=op[i]?.mes||'';return `<option value="">— não indicar —</option>`+Array.from({length:12},(_,k)=>{const m=mk(k+1);const bloq=bloqueio(id,m,i);return `<option value="${m}" ${sel===m?'selected':''} ${bloq&&!rh?'disabled':''}>${MESES[k]}${bloq?' — '+esc(bloq):''}</option>`}).join('')};
   const hoje=new Date().toISOString().slice(0,10);const fechaTxt=r.aqFim&&r.aqFim<hoje?'Período aquisitivo completou em':'Período aquisitivo em curso fecha em';
   $('#panel').innerHTML=`<div class="dates"><div class="dcard"><div class="l">${fechaTxt}</div><div class="v">${fmtD(r.aqFim)}</div><div class="s">Período: ${fmtD(r.aqIni)} a ${fmtD(r.aqFim)}</div></div><div class="dcard lim"><div class="l">Data-limite para gozo</div><div class="v">${fmtD(r.limite)}</div><div class="s">As férias precisam ser gozadas até esta data.</div></div></div><div class="grid2"><div class="card"><h2>${rh&&editTarget?'Indicações de '+esc(r.nome):'Suas indicações'}</h2>
@@ -350,7 +352,7 @@ function renderMine(){
 function bloqueio(id,m,slot){
   const r=byId[id];
   for(const rel of r.rel){const o=byId[rel.id];if(PROG[rel.id]&&PROG[rel.id].has(m))return curto(o.nome)+' tem férias';
-    const p=PREF[rel.id];if(p&&(p.opcoes||[]).some(x=>x&&x.mes===m))return 'indicado por '+curto(o.nome)}
+    const p=PREF[rel.id];const x=p&&(p.opcoes||[])[slot];if(x&&x.mes===m)return 'indicado por '+curto(o.nome)+' como '+(slot+1)+'ª opção'}
   return '';
 }
 function optCell(o){return o?`<span class="opt"><b>${MABR[+o.mes.slice(5)-1]}/${o.mes.slice(2,4)}</b><small>${esc(o.por)} · ${when(o.quando)}</small></span>`:'<span class="hint">—</span>'}
@@ -377,7 +379,7 @@ function renderCal(){
       if(PROG[r.id].has(m))h+=`<span class="p pp" title="Férias já programadas">Prog.</span>`;
       if(oi>=0){const bad=cv[r.id]&&cv[r.id].has(m);const o=p.opcoes[oi];h+=`<span class="p ${bad?'px':'p'+(oi+1)}" title="${esc(o.por)} · ${when(o.quando)}">${oi+1}ª</span>`}
       return `<td class="c">${h}</td>`}).join('')+'</tr>'});
-  $('#panel').innerHTML=`<div class="legend"><span><i style="background:var(--o1)"></i>1ª opção</span><span><i style="background:var(--o2)"></i>2ª opção</span><span><i style="background:var(--o3)"></i>3ª opção</span><span><i style="background:var(--prog)"></i>Férias já programadas</span><span><i style="background:var(--bad)"></i>Conflito entre quem se cobre</span></div>
+  $('#panel').innerHTML=`<div class="legend"><span><i style="background:var(--o1)"></i>1ª opção</span><span><i style="background:var(--o2)"></i>2ª opção</span><span><i style="background:var(--o3)"></i>3ª opção</span><span><i style="background:var(--prog)"></i>Férias já programadas</span><span><i style="background:var(--bad)"></i>Conflito: mesma opção de quem se cobre</span></div>
   <div class="tw cal"><table><thead><tr><th>Colaborador</th>${MABR.map(m=>`<th class="m">${m}</th>`).join('')}</tr></thead><tbody>${rows}</tbody></table></div>`;
 }
 function renderRegras(){
