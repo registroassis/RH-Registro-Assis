@@ -2400,6 +2400,9 @@ function viewDashboard(){
           // sem data exata: usa o campo "ano" da própria programação (ex.: agendada só com "Mês programado")
           return Number(f.ano)===anoAtual && f.mesProgramado;
         }).sort((a,b)=>{
+          const ordemSt={'Em gozo':0,'Programada':1,'Concluída':2};
+          const ra = ordemSt[a.status]??3, rb = ordemSt[b.status]??3;
+          if(ra!==rb) return ra-rb;
           const chaveA = a.dataSaida || (String(a.ano)+'-'+String(mesIndexFromToken((a.mesProgramado||'').split('/')[0])+1).padStart(2,'0')+'-01');
           const chaveB = b.dataSaida || (String(b.ano)+'-'+String(mesIndexFromToken((b.mesProgramado||'').split('/')[0])+1).padStart(2,'0')+'-01');
           return chaveA.localeCompare(chaveB);
