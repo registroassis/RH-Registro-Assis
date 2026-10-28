@@ -254,7 +254,7 @@ window.__fbReady = new Promise((resolve)=>{ window.__fbReadyResolve = resolve; }
 (async ()=>{
   try{
     const { initializeApp } = await import('https://cdn.jsdelivr.net/npm/firebase@10.13.1/app/+esm');
-    const { getFirestore, doc, getDoc, setDoc, deleteDoc, collection, getDocs, query, orderBy, limit, onSnapshot } =
+    const { getFirestore, doc, getDoc, setDoc, updateDoc, runTransaction, deleteDoc, collection, getDocs, query, orderBy, limit, onSnapshot } =
       await import('https://cdn.jsdelivr.net/npm/firebase@10.13.1/firestore/+esm');
     const { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } =
       await import('https://cdn.jsdelivr.net/npm/firebase@10.13.1/auth/+esm');
@@ -272,7 +272,7 @@ window.__fbReady = new Promise((resolve)=>{ window.__fbReadyResolve = resolve; }
     const auth = getAuth(app);
 
     window.FB = {
-      db, auth, doc, getDoc, setDoc, deleteDoc, collection, getDocs, query, orderBy, limit, onSnapshot,
+      db, auth, doc, getDoc, setDoc, updateDoc, runTransaction, deleteDoc, collection, getDocs, query, orderBy, limit, onSnapshot,
       signIn: (email, senha) => signInWithEmailAndPassword(auth, email, senha),
       signOutUser: () => signOut(auth),
       onAuthChange: (cb) => onAuthStateChanged(auth, cb),
@@ -1739,12 +1739,77 @@ async function dbLerTudo(){
   return out;
 }
 
-async function dbSalvarTudo(){
-  const nucleo = {};
-  RHU_DOC_NUCLEO.forEach(k=>{ nucleo[k] = S[k]===undefined ? null : S[k]; });
-  await window.FB.setDoc(window.FB.doc(window.FB.db, 'rhu', 'nucleo'), nucleo);
+// ---- Gravação com mesclagem (nunca apaga o que outra pessoa lançou) ----
+// Antes, cada salvamento regravava a lista INTEIRA com o que estava na tela de quem salvou; se a tela
+// estivesse desatualizada (outra pessoa/aba tinha lançado algo nesse meio tempo), o lançamento da outra
+// pessoa era apagado. Agora cada salvamento envia só o que ESTA pessoa mudou (novos, editados e excluídos,
+// comparados com a última versão sincronizada) e o aplica sobre a versão mais recente do banco.
+let BASE_L = {};   // lista -> Map(id -> texto estável do item) da última versão sincronizada
+let BASE_N = {};   // chave do núcleo -> texto estável da última versão sincronizada
+let SALVANDO = Promise.resolve();
+function estavel(v){
+  if(v===undefined) return 'u';
+  if(v===null || typeof v!=='object') return JSON.stringify(v);
+  if(Array.isArray(v)) return '['+v.map(estavel).join(',')+']';
+  return '{'+Object.keys(v).filter(k=>v[k]!==undefined).sort().map(k=>JSON.stringify(k)+':'+estavel(v[k])).join(',')+'}';
+}
+const listaComIds = (arr)=> (arr||[]).every(x=>x && x.id!==undefined && x.id!==null);
+const mapaDe = (arr)=> new Map((arr||[]).map(x=>[x.id, estavel(x)]));
+function baseDeRemoto(dados){
+  BASE_L = {}; BASE_N = {};
+  RHU_DOC_LISTAS.forEach(n=>{ BASE_L[n] = mapaDe((dados && dados[n])||[]); });
+  RHU_DOC_NUCLEO.forEach(k=>{ BASE_N[k] = estavel(dados && dados[k]===undefined ? null : (dados? dados[k] : null)); });
+}
+// Aplica as mudanças locais (comparadas com 'baseMap') sobre a lista 'remota'.
+function mesclarLista(baseMap, local, remota, nome){
+  const loc = new Map(local.map(x=>[x.id,x]));
+  const removidos = new Set([...baseMap.keys()].filter(id=>!loc.has(id)));
+  const editados = new Map(local.filter(x=>baseMap.has(x.id) && estavel(x)!==baseMap.get(x.id)).map(x=>[x.id,x]));
+  const novos = local.filter(x=>!baseMap.has(x.id));
+  let saida = remota.filter(x=>!removidos.has(x.id)).map(x=>editados.has(x.id)?editados.get(x.id):x);
+  const jaTem = new Set(saida.map(x=>x.id));
+  const novosReais = novos.filter(x=>!jaTem.has(x.id));
+  return nome==='auditoria' ? [...novosReais, ...saida] : [...saida, ...novosReais];
+}
+function dbSalvarTudo(){
+  SALVANDO = SALVANDO.catch(()=>{}).then(salvarMesclando);
+  return SALVANDO;
+}
+async function salvarMesclando(){
+  const FB = window.FB, ref = (n)=>FB.doc(FB.db,'rhu',n);
+  // 1) núcleo (configurações): só as chaves que esta pessoa mudou
+  const mud = {};
+  RHU_DOC_NUCLEO.forEach(k=>{ const v = S[k]===undefined ? null : S[k]; if(BASE_N[k]!==estavel(v)) mud[k]=v; });
+  if(Object.keys(mud).length){
+    try{ await FB.updateDoc(ref('nucleo'), mud); }
+    catch(e){
+      if(e && e.code==='not-found'){ const tudo={}; RHU_DOC_NUCLEO.forEach(k=>{ tudo[k]=S[k]===undefined?null:S[k]; }); await FB.setDoc(ref('nucleo'), tudo); }
+      else throw e;
+    }
+    Object.keys(mud).forEach(k=>{ BASE_N[k]=estavel(mud[k]); });
+  }
+  // 2) listas: envia só novos/editados/excluídos e mescla com a versão mais recente do banco
   for(const nome of RHU_DOC_LISTAS){
-    await window.FB.setDoc(window.FB.doc(window.FB.db, 'rhu', nome), {itens: S[nome]||[]});
+    const local = S[nome]||[];
+    const baseMap = BASE_L[nome];
+    if(!listaComIds(local)){ await FB.setDoc(ref(nome), {itens: local}); BASE_L[nome]=null; continue; } // sem ids: comportamento antigo
+    if(baseMap){
+      const mudou = local.length!==baseMap.size || local.some(x=>baseMap.get(x.id)!==estavel(x));
+      if(!mudou) continue;
+    }
+    const instantaneo = local.slice();           // o que esta pessoa tinha ao começar a salvar
+    const baseUsada = baseMap || new Map();
+    const gravado = await FB.runTransaction(FB.db, async (tx)=>{
+      const snap = await tx.get(ref(nome));
+      const remota = snap.exists() ? (snap.data().itens||[]) : [];
+      if(!listaComIds(remota)){ tx.set(ref(nome), {itens: instantaneo}); return instantaneo; }
+      const mesclada = mesclarLista(baseUsada, instantaneo, remota, nome);
+      tx.set(ref(nome), {itens: mesclada});
+      return mesclada;
+    });
+    // traz para a tela o que outras pessoas lançaram, preservando o que foi digitado durante o salvamento
+    S[nome] = mesclarLista(mapaDe(instantaneo), S[nome]||[], gravado, nome);
+    BASE_L[nome] = mapaDe(gravado);
   }
 }
 
@@ -1763,9 +1828,10 @@ async function resolverUsuarioAtual(fbUser){
 async function loadState(){
   try{
     const carregado = await dbLerTudo();
-    if(carregado){ S = JSON.parse(JSON.stringify(carregado)); migrateState(); await persist(true); await verificarBackupDiario(); return; }
+    if(carregado){ baseDeRemoto(carregado); S = JSON.parse(JSON.stringify(carregado)); migrateState(); await persist(true); await verificarBackupDiario(); return; }
     // Só chega aqui se o banco respondeu normalmente e confirmou que ainda não existe nada salvo —
     // ou seja, é mesmo a primeira vez que o sistema é usado.
+    baseDeRemoto(null);
     S = JSON.parse(JSON.stringify(BACKUP_INICIAL));
     migrateState();
     await persist(true);
@@ -4778,10 +4844,22 @@ let SYNC_ATIVA = false;
 function iniciarSincronizacaoTempoReal(){
   if(SYNC_ATIVA) return; // só uma vez por sessão
   SYNC_ATIVA = true;
+  // Cada atualização que chega de outra pessoa é MESCLADA com o que está na tela (nunca substitui por
+  // cima): lançamentos feitos aqui e ainda não gravados são preservados.
   const aplicar = (campo, dados)=>{
-    if(q('.modal-backdrop')) return; // não interrompe quem está com um formulário aberto — a próxima
-                                      // mudança (ou o fechamento do modal) já reconcilia sozinho
-    S[campo] = dados;
+    if(RHU_DOC_LISTAS.includes(campo)){
+      const remota = dados||[];
+      if(listaComIds(remota) && listaComIds(S[campo]||[]) && BASE_L[campo]){
+        S[campo] = mesclarLista(BASE_L[campo], S[campo]||[], remota, campo);
+        BASE_L[campo] = mapaDe(remota);
+      } else { S[campo] = remota; BASE_L[campo] = listaComIds(remota)? mapaDe(remota) : null; }
+    } else {
+      const v = S[campo]===undefined ? null : S[campo];
+      const mexidoAqui = BASE_N[campo]!==undefined && BASE_N[campo]!==estavel(v);
+      if(!mexidoAqui) S[campo] = dados;
+      BASE_N[campo] = estavel(dados);
+    }
+    if(q('.modal-backdrop')) return; // não fecha o formulário de quem está digitando; a tela atualiza ao fechar
     render();
   };
   window.FB.onSnapshot(window.FB.doc(window.FB.db,'rhu','nucleo'), (snap)=>{
