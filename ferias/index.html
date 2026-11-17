@@ -301,12 +301,97 @@ function render(){
   if(!me){renderLogin();return}
   if(VE_TUDO.has(me)&&!ADMIN_OK){renderSenha();return}
   const pode=VE_TUDO.has(me);if(!pode){tab='mine';rh=false;editTarget=null}
-  const tabs=pode?[['mine','Minhas indicações'],['board','Quadro por setor'],['cal','Calendário '+ANO],['regras','Regras de cobertura'],['colabs','Colaboradores e ano'],['log','Atividade']]:[];
+  const tabs=pode?[['mine','Minhas indicações'],['board','Quadro por setor'],['cal','Calendário '+ANO],['escala','Escala sugerida'],['regras','Regras de cobertura'],['colabs','Colaboradores e ano'],['log','Atividade']]:[];
   $('#rhLnk').hidden=!pode;
   $('#app').innerHTML=(rh?'<div class="rhbar">Modo RH ativo: você pode editar a indicação de qualquer colaborador e ignorar bloqueios de conflito. Alterações ficam registradas na aba Atividade.</div>':'')+
    (tabs.length?'<div class="tabs noprint" role="tablist">'+tabs.map(t=>`<button class="tab" role="tab" data-t="${t[0]}" aria-selected="${tab===t[0]}">${t[1]}</button>`).join('')+'</div>':'')+'<div id="panel"></div>';
   document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{tab=b.dataset.t;render()});
-  ({mine:renderMine,board:renderBoard,cal:renderCal,regras:renderRegras,colabs:renderColabs,log:renderLog})[tab]();
+  ({mine:renderMine,board:renderBoard,cal:renderCal,escala:renderEscala,regras:renderRegras,colabs:renderColabs,log:renderLog})[tab]();
+}
+/* ====== escala sugerida (gerada a partir das indicações) ====== */
+const isoD=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+const addD=(s,n)=>{const d=new Date(s+'T12:00:00');d.setDate(d.getDate()+n);return isoD(d)};
+/* feriados nacionais + 9 de julho (SP); móveis calculados pela Páscoa */
+function feriados(ano){
+  const a=ano%19,b=Math.floor(ano/100),c=ano%100,d=Math.floor(b/4),e=b%4,f=Math.floor((b+8)/25),g=Math.floor((b-f+1)/3),h=(19*a+b-d-g+15)%30,i=Math.floor(c/4),k=c%4,l=(32+2*e+2*i-h-k)%7,m=Math.floor((a+11*h+22*l)/451);
+  const pas=isoD(new Date(ano,Math.floor((h+l-7*m+114)/31)-1,((h+l-7*m+114)%31)+1,12));
+  return ['01-01','04-21','05-01','07-09','09-07','10-12','11-02','11-15','11-20','12-25'].map(x=>ano+'-'+x).concat([addD(pas,-48),addD(pas,-47),addD(pas,-2),addD(pas,60)]);
+}
+/* período a programar e quantos dias faltam (desconta férias já programadas/em gozo) */
+function alvoEscala(r){
+  let rest=(+r.ajuste||0)+(r.recs||[]).filter(x=>x.fim>=DATABASE&&(!x.status||['Programada','Em gozo'].includes(x.status))).reduce((t,x)=>t+(+x.dias||diasEntre(x.ini,x.fim)),0);
+  for(const x of r.periodos||[]){let falta=30-dnum(x.goz);const usa=Math.min(rest,falta);rest-=usa;falta-=usa;
+    if(falta>=1)return {p:x,dias:Math.floor(falta)}}
+  return null;
+}
+function gerarEscala(){
+  const fer=new Set([...feriados(ANO),...feriados(ANO+1)]),fimAno=ANO+'-12-31';
+  /* início sempre numa segunda-feira útil, sem feriado nos 2 dias seguintes (CLT art. 134 §3º) */
+  const okIni=s=>new Date(s+'T12:00:00').getDay()===1&&!fer.has(s)&&!fer.has(addD(s,1))&&!fer.has(addD(s,2));
+  const segs=m=>{const out=[];for(let d=1;d<=31;d++){const s=m+'-'+String(d).padStart(2,'0');if(new Date(s+'T12:00:00').getMonth()+1!==+m.slice(5))break;if(okIni(s))out.push(s)}return out};
+  const ocup={};ROSTER.forEach(r=>ocup[r.id]=(r.recs||[]).filter(x=>x.status!=='Concluída').map(x=>[x.ini,x.fim]));
+  const sob=(a,b)=>a[0]<=b[1]&&b[0]<=a[1];
+  const livre=(r,iv)=>!ocup[r.id].some(x=>sob(x,iv))&&!r.rel.some(x=>(ocup[x.id]||[]).some(y=>sob(y,iv)));
+  const tenta=(it,m)=>{for(const s of segs(m)){if(s<it.desde)continue;const iv=[s,addD(s,it.dias-1)];if(livre(it.r,iv))return iv}return null};
+  const marca=(it,iv,st)=>{it.ini=iv[0];it.fim=iv[1];it.st=st;ocup[it.r.id].push(iv)};
+  const res={},fila=[];
+  ROSTER.forEach(r=>{const p=PREF[r.id];const it={r,obs:(p&&p.obs)||'',ops:[0,1,2].map(i=>((p&&p.opcoes)||[])[i]?.mes||'')};res[r.id]=it;
+    const a=alvoEscala(r);
+    if(!a){it.st='sem';it.msg='Sem saldo de férias a programar';return}
+    it.dias=a.dias;it.per=a.p;it.lim=a.p.limite||r.limite||'';it.desde=addD(a.p.fim,1);
+    if(it.desde>fimAno){it.st='sem';it.msg='Período aquisitivo só completa em '+fmtD(a.p.fim);return}
+    fila.push(it)});
+  /* prioridade: quem vence primeiro */
+  fila.sort((a,b)=>(a.lim||'9999').localeCompare(b.lim||'9999'));
+  /* rodadas: todos tentam a 1ª opção, depois a 2ª, depois a 3ª */
+  for(let i=0;i<3;i++)fila.forEach(it=>{if(it.ini||!it.ops[i])return;const iv=tenta(it,it.ops[i]);if(iv&&!(it.lim&&iv[1]>it.lim))marca(it,iv,'op'+(i+1))});
+  /* quem não coube: mês livre mais próximo da 1ª opção (ou o mais cedo, se não indicou), dentro da data-limite */
+  fila.forEach(it=>{if(it.ini)return;const k0=it.ops[0]?+it.ops[0].slice(5):1;
+    const meses=Array.from({length:12},(_,k)=>k+1).sort((x,y)=>Math.abs(x-k0)-Math.abs(y-k0)||x-y).map(mk);
+    let iv=null;for(const m of meses){const t=tenta(it,m);if(t&&!(it.lim&&t[1]>it.lim)){iv=t;break}}
+    if(!iv)for(const m of Array.from({length:12},(_,k)=>mk(k+1))){const t=tenta(it,m);if(t){iv=t;break}}
+    if(iv){marca(it,iv,it.ops.some(Boolean)?'aj':'auto');if(it.st==='aj')it.msg=it.ops.filter(Boolean).every(m=>m+'-31'<it.desde)?'O período aquisitivo só completa em '+fmtD(addD(it.desde,-1))+'.':'As opções indicadas batem com o grupo de backup ou passam da data-limite.'}else{it.st='x';it.msg='Não há data livre no ano: resolver manualmente'}});
+  return ROSTER.map(r=>res[r.id]);
+}
+const ST_ESC={op1:['ok','1ª opção'],op2:['ok','2ª opção'],op3:['pend','3ª opção'],aj:['bad','Ajustada (opções em conflito)'],auto:['pend','Sem indicação: sugerida'],x:['bad','Sem data livre'],sem:['','—']};
+function renderEscala(){
+  const L=gerarEscala();const cnt=k=>L.filter(x=>x.st===k).length;let rows='',cur='';
+  L.forEach(it=>{const r=it.r;if(r.secao!==cur){cur=r.secao;rows+=`<tr class="sec"><td colspan="8">${esc(cur)}</td></tr>`}
+    const [cl,tx]=ST_ESC[it.st];const tarde=it.fim&&it.lim&&it.fim>it.lim;
+    const ops=it.ops.map((m,i)=>m?MABR[+m.slice(5)-1]+' ('+(i+1)+'ª)':'').filter(Boolean).join(', ');
+    rows+=`<tr><td class="nm">${esc(r.nome)}</td><td>${it.dias||'—'}</td><td class="dd">${it.ini?fmtD(it.ini):'—'}</td><td class="dd">${it.fim?fmtD(it.fim):'—'}</td>
+      <td>${cl?`<span class="chip ${cl}">${tx}</span>`:''}${it.msg?`<div class="hint">${esc(it.msg)}</div>`:''}${ops?`<div class="hint">Indicou: ${ops}</div>`:''}</td>
+      <td>${it.lim?fmtD(it.lim):'—'}${tarde?'<div class="msg bad">Termina depois da data-limite</div>':''}</td><td>${it.per?fmtD(it.per.ini)+' a '+fmtD(it.per.fim):'—'}</td><td>${esc(it.obs)}</td></tr>`});
+  $('#panel').innerHTML=`<div class="card noprint" style="margin-bottom:14px"><h2>Escala sugerida ${ANO}</h2>
+    <p class="hint">Montada na hora com as indicações salvas. Quem vence primeiro tem prioridade. Primeiro todos tentam a 1ª opção, depois a 2ª e depois a 3ª. Ninguém sai junto com alguém do seu grupo de backup nem durante férias já programadas. As férias começam numa segunda-feira útil, sem feriado nos dois dias seguintes. Os dias são o saldo do período e precisam terminar até a data-limite. É uma sugestão: baixe em Excel para ajustar.</p>
+    <div class="tools"><span class="chip ok">1ª opção: ${cnt('op1')}</span><span class="chip ok">2ª: ${cnt('op2')}</span><span class="chip pend">3ª: ${cnt('op3')}</span><span class="chip bad">Ajustadas: ${cnt('aj')}</span><span class="chip pend">Sem indicação: ${cnt('auto')}</span>${cnt('x')?`<span class="chip bad">Sem data livre: ${cnt('x')}</span>`:''}
+    <button class="pri" id="escXls">Baixar Excel</button><button id="escPrint">Imprimir</button></div></div>
+    <div class="tw"><table><thead><tr><th>Colaborador</th><th>Dias</th><th>Início</th><th>Fim</th><th>Resultado</th><th>Data-limite</th><th>Período aquisitivo</th><th>Observação</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+  $('#escPrint').onclick=()=>window.print();
+  $('#escXls').onclick=async()=>{const b=$('#escXls');b.disabled=true;
+    try{await baixarEscalaXlsx(L)}catch(e){toast(e.message||'Não foi possível gerar o Excel.')}b.disabled=false};
+}
+let XLSXlib=null;
+function carregarXlsx(){
+  if(XLSXlib)return Promise.resolve(XLSXlib);
+  return new Promise((res,rej)=>{const sc=document.createElement('script');sc.src='https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js';
+    sc.onload=()=>{XLSXlib=window.XLSX;res(XLSXlib)};sc.onerror=()=>rej(new Error('Não foi possível carregar o gerador de Excel. Verifique a internet e tente de novo.'));document.head.appendChild(sc)});
+}
+async function baixarEscalaXlsx(L){
+  const X=await carregarXlsx();
+  const dt=s=>{if(!s)return null;const [a,m,d]=s.split('-').map(Number);return (Date.UTC(a,m-1,d)-Date.UTC(1899,11,30))/864e5}; /* nº de série do Excel: não sofre com fuso horário */
+  const head=['Setor','Colaborador','Dias','Início','Fim','Resultado','1ª opção','2ª opção','3ª opção','Data-limite','Período aquisitivo','Observação'];
+  const rows=[head];
+  L.forEach(it=>{const r=it.r;rows.push([r.secao,r.nome,it.dias||null,dt(it.ini),null,(ST_ESC[it.st][1]==='—'?(it.msg||''):ST_ESC[it.st][1]),
+    ...it.ops.map(m=>m?MESES[+m.slice(5)-1]:''),dt(it.lim),it.per?fmtD(it.per.ini)+' a '+fmtD(it.per.fim):'',it.obs])});
+  const ws=X.utils.aoa_to_sheet(rows);
+  for(let i=1;i<rows.length;i++){const R=i+1;
+    ['D','J'].forEach(c=>{const cell=ws[c+R];if(cell&&typeof cell.v==='number'){cell.t='n';cell.z='dd/mm/yyyy'}});
+    if(rows[i][3]&&rows[i][2])ws['E'+R]={t:'n',f:`D${R}+C${R}-1`,z:'dd/mm/yyyy'}}
+  ws['!cols']=[18,38,6,12,12,26,11,11,11,12,24,40].map(w=>({wch:w}));
+  ws['!autofilter']={ref:'A1:L'+rows.length};
+  const wb=X.utils.book_new();X.utils.book_append_sheet(wb,ws,'Escala '+ANO);
+  X.writeFile(wb,'Escala de Férias '+ANO+' - sugerida.xlsx');
 }
 function renderSenha(){
   $('#rhLnk').hidden=true;
