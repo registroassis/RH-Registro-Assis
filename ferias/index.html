@@ -126,7 +126,7 @@ function sha256(str){
   return H.map(x=>(x>>>0).toString(16).padStart(8,'0')).join('')}
 const hashSenha=s=>sha256(unescape(encodeURIComponent('assisri:'+s)));
 let ADMIN_OK=ls('fer_adm')===SENHA_HASH;
-const SO_BACKUP={c004:'Backup'};
+const SO_BACKUP={c004:'Assistente de Processos'};
 /* regras de cobertura: base (cadastro) + ajustes feitos pelo RH em tempo real */
 let REGRAS={};
 const pk=(a,b)=>a<b?a+'|'+b:b+'|'+a;
@@ -155,7 +155,7 @@ function rebuildRoster(){
   ROSTER_BASE.forEach(b=>{const o=COLABS[b.id];const r=norm(b,o);r.rel=b.rel;if(r.ativo!==false)lista.push(r)});
   Object.values(COLABS).forEach(o=>{if(BASEBYID[o.id])return;const r=norm({},o);if(r.ativo!==false)lista.push(r)});
   lista.forEach(r=>{r.secao=SO_BACKUP[r.id]||r.setor});
-  const ord=[...new Set(lista.map(r=>r.secao))].filter(x=>x!=='Backup').concat(['Backup']);
+  const ord=[...new Set(lista.map(r=>r.secao))].filter(x=>x!=='Assistente de Processos').concat(['Assistente de Processos']);
   lista.sort((a,b)=>ord.indexOf(a.secao)-ord.indexOf(b.secao));
   ROSTER.length=0;lista.forEach(r=>ROSTER.push(r));
   Object.keys(byId).forEach(k=>delete byId[k]);ROSTER.forEach(r=>byId[r.id]=r);
@@ -328,7 +328,7 @@ function renderMine(){
     ${[0,1,2].map(i=>`<div class="field"><label for="op${i}">${i+1}ª opção de mês</label><select id="op${i}">${optsHTML(i)}</select>${op[i]?`<span class="hint">Indicado por ${esc(op[i].por)} em ${when(op[i].quando)}</span>`:''}<div id="aviso${i}"></div></div>`).join('')}
     <div class="field"><label for="obs">Observação (opcional)</label><textarea id="obs" rows="2" maxlength="200">${esc(p.obs||'')}</textarea></div>
     <div id="erro"></div><button class="pri" id="salvar">Salvar indicações</button> <span class="hint">As três opções devem ser meses diferentes.</span></div>
-   <div class="card"><h2>Seus dados</h2><dl class="kv"><dt>Colaborador</dt><dd>${esc(r.nome)}</dd><dt>Setor</dt><dd>${esc(r.id==='c004'?'Backup (Atendimento, Registro, Financeiro, Digitalização, Certidão, Inovação e Processos e RH)':r.setor)}</dd><dt>Grupo de backup</dt><dd>${esc(r.grupo)}</dd></dl>
+   <div class="card"><h2>Seus dados</h2><dl class="kv"><dt>Colaborador</dt><dd>${esc(r.nome)}</dd><dt>Setor</dt><dd>${esc(r.id==='c004'?'Assistente de Processos (Atendimento, Registro, Financeiro, Digitalização, Certidão, Inovação e Processos e RH)':r.setor)}</dd><dt>Grupo de backup</dt><dd>${esc(r.grupo)}</dd></dl>
    <h3>Não pode sair no mesmo mês que</h3>${r.rel.length?`<ul style="margin:0;padding-left:18px">${rels}</ul>`:'<p class="hint">Nenhuma relação de cobertura cadastrada. Confirme com o RH.</p>'}
    ${r.recs.length?`<h3>Férias já programadas</h3><ul style="margin:0;padding-left:18px">${r.recs.map(x=>`<li>${fmtD(x.ini)} a ${fmtD(x.fim)} (${esc(x.status)})</li>`).join('')}</ul>`:''}</div></div>`;
   const aviso=()=>{[0,1,2].forEach(i=>{const m=$('#op'+i).value;let h='';if(m){if(r.limite&&m+'-01'>r.limite)h=`<div class="msg warn">Este mês é depois da data-limite (${fmtD(r.limite)}). Confirme com o RH antes.</div>`;}$('#aviso'+i).innerHTML=h})};
