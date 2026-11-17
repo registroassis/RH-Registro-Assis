@@ -177,6 +177,15 @@ function calcPeriodo(periodos,recs,base,ajuste){
     if(!alvo)alvo=x}
   return alvo||((periodos||[])[(periodos||[]).length-1])||null;
 }
+/* saldo do período já completo que ainda tem dias a gozar (ex.: 10 dias até a data-limite) */
+function saldoPendente(r){
+  let rest=(+r.ajuste||0)+(r.recs||[]).filter(x=>x.fim>=DATABASE&&(!x.status||['Programada','Em gozo'].includes(x.status))).reduce((t,x)=>t+(+x.dias||diasEntre(x.ini,x.fim)),0);
+  for(const x of r.periodos||[]){if(!(x.fim<DATABASE))return null;let falta=30-dnum(x.goz);
+    const usa=Math.min(rest,falta);rest-=usa;falta-=usa;if(falta>0)return {p:x,falta}}
+  return null;
+}
+/* férias já programadas que tocam o ano das indicações (inclui as que começam no ano anterior, ex.: dez/26 a jan/27) */
+const recsNoAno=r=>(r.recs||[]).filter(x=>x.status!=='Concluída'&&x.fim>=ANO+'-01-01'&&x.ini<=ANO+'-12-31');
 /* ===== leitura do relatório "Programação de Férias" da folha ===== */
 function linesFromItems(items){
   const rows=[];
@@ -320,10 +329,10 @@ function alvoId(){return rh&&editTarget?editTarget:me}
 function renderMine(){
   const id=alvoId(),r=byId[id],p=PREF[id]||{opcoes:[null,null,null],obs:''};
   const op=[0,1,2].map(i=>(p.opcoes||[])[i]||null);
-  const rels=r.rel.map(x=>{const o=byId[x.id],po=PREF[x.id];const ms=(po?.opcoes||[]).map((m,i)=>m?MABR[+m.mes.slice(5)-1]+' ('+(i+1)+'ª)':null).filter(Boolean).join(', ');return `<li><b>${esc(curto(o.nome))}</b>${x.tipo==='cad'?' <span class="hint">(cadastro)</span>':''}: ${ms||'<span class="hint">ainda não indicou</span>'}</li>`}).join('');
+  const rels=r.rel.map(x=>{const o=byId[x.id],po=PREF[x.id];const ms=(po?.opcoes||[]).map((m,i)=>m?MABR[+m.mes.slice(5)-1]+' ('+(i+1)+'ª)':null).filter(Boolean).join(', ');const pr=recsNoAno(o).map(v=>fmtD(v.ini)+' a '+fmtD(v.fim)).join('; ');return `<li><b>${esc(curto(o.nome))}</b>${x.tipo==='cad'?' <span class="hint">(cadastro)</span>':''}: ${ms||'<span class="hint">ainda não indicou</span>'}${pr?`<br><span style="color:var(--bad)">Férias programadas: ${pr}</span> <span class="hint">(esses meses ficam bloqueados para você)</span>`:''}</li>`}).join('');
   const optsHTML=i=>{const sel=op[i]?.mes||'';return `<option value="">— não indicar —</option>`+Array.from({length:12},(_,k)=>{const m=mk(k+1);const bloq=bloqueio(id,m,i);return `<option value="${m}" ${sel===m?'selected':''} ${bloq&&!rh?'disabled':''}>${MESES[k]}${bloq?' — '+esc(bloq):''}</option>`}).join('')};
   const hoje=new Date().toISOString().slice(0,10);const fechaTxt=r.aqFim&&r.aqFim<hoje?'Período aquisitivo completou em':'Período aquisitivo em curso fecha em';
-  $('#panel').innerHTML=`<div class="dates"><div class="dcard"><div class="l">${fechaTxt}</div><div class="v">${fmtD(r.aqFim)}</div><div class="s">Período: ${fmtD(r.aqIni)} a ${fmtD(r.aqFim)}</div></div><div class="dcard lim"><div class="l">Data-limite para gozo</div><div class="v">${fmtD(r.limite)}</div><div class="s">As férias precisam ser gozadas até esta data.</div></div></div><div class="grid2"><div class="card"><h2>${rh&&editTarget?'Indicações de '+esc(r.nome):'Suas indicações'}</h2>
+  $('#panel').innerHTML=`<div class="dates"><div class="dcard"><div class="l">${fechaTxt}</div><div class="v">${fmtD(r.aqFim)}</div><div class="s">Período: ${fmtD(r.aqIni)} a ${fmtD(r.aqFim)}</div></div><div class="dcard lim"><div class="l">Data-limite para gozo</div><div class="v">${fmtD(r.limite)}</div><div class="s">As férias precisam ser gozadas até esta data.</div></div>${(()=>{const sp=saldoPendente(r);if(!sp)return '';const lim=sp.p.limite||r.limite;const d=String(sp.falta).replace('.',',');return `<div class="dcard lim"><div class="l">Dias ainda a gozar</div><div class="v">${d} dias</div><div class="s">Do período ${fmtD(sp.p.ini)} a ${fmtD(sp.p.fim)}. Precisam ser gozados até ${fmtD(lim)}.</div></div>`})()}</div><div class="grid2"><div class="card"><h2>${rh&&editTarget?'Indicações de '+esc(r.nome):'Suas indicações'}</h2>
     ${rh?`<div class="field"><label for="selAlvo">Editar em nome de</label><select id="selAlvo">${ROSTER.map(x=>`<option value="${x.id}" ${x.id===id?'selected':''}>${esc(x.nome)}</option>`).join('')}</select></div>`:''}
     ${[0,1,2].map(i=>`<div class="field"><label for="op${i}">${i+1}ª opção de mês</label><select id="op${i}">${optsHTML(i)}</select>${op[i]?`<span class="hint">Indicado por ${esc(op[i].por)} em ${when(op[i].quando)}</span>`:''}<div id="aviso${i}"></div></div>`).join('')}
     <div class="field"><label for="obs">Observação (opcional)</label><textarea id="obs" rows="2" maxlength="200">${esc(p.obs||'')}</textarea></div>
